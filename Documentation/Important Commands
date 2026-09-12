@@ -1,0 +1,17 @@
+
+1. Run the test in debug mode on chrome
+npm run test:dev -- --project=chromium-debug
+
+2. See all available projects
+npx playwright test --list
+
+3. Run the test on chrome
+npm run test:dev -- --project=chromium
+
+npm run test:dev:headed -- --project=chromium 
+
+This is an important command.
+# It means:TEST_ENV=dev + Project = chromium
+# So: DEV + Chromium only.
+
+4. 

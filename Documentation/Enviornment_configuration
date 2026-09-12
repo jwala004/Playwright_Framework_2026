@@ -1,0 +1,375 @@
+Installations done to set cross-env configurations;
+
+==> install dotenv and cross-env
+If you haven't already:
+
+npm install dotenv
+npm install -D cross-env
+
+
+
+Environment selection and Playwright Project selection are two different dimensions.
+
+npm run test:dev
+        │
+        ↓
+TEST_ENV=dev
+        │
+        ↓
+    .env.dev
+        │
+        ↓
+https://learninglab.cloud
+        │
+        ↓
+┌───────┼────────┐
+↓       ↓        ↓
+Chrome Firefox  WebKit
+
+This is our first real combination of environment + Playwright Projects.
+
+The architecture we've reached;
+                         TEST
+                           │
+                           │
+                 ┌─────────┴──────────────────┐
+                 │                            │
+            ENVIRONMENT                     PROJECT
+                 │                            │
+                 ↓                            ↓
+            TEST_ENV                     --project
+                 │                            │
+        ┌────────┼────────┐             ┌─────┼──────┐
+        ↓        ↓        ↓             ↓     ↓      ↓
+       dev      uat      prod        Chrome Firefox WebKit
+        │        │        │
+        ↓        ↓        ↓
+    .env.dev  .env.uat .env.prod
+        │        │        │
+        └────────┼────────┘
+                 ↓
+          Environment Config
+                 │
+                 ↓
+             Playwright
+                 │
+                 ↓
+               TEST
+
+This is a much better mental model than thinking of .env.dev and .env.uat as Playwright Projects.            
+
+We currently have a working configuration system. Now we're going to make it type-safe, fail-fast, and difficult to misuse.
+
+The goal is:
+
+TEST_ENV
+   │
+   ▼
+Validate environment
+   │
+   ├── dev  ✓
+   ├── uat  ✓
+   ├── prod ✓
+   └── anything else ✗
+   │
+   ▼
+Load exact .env file
+   │
+   ▼
+Validate required variables
+   │
+   ▼
+Expose typed immutable config
+   │
+   ▼
+Playwright
+
+
+24th Aug:
+Yes — understood. You want a text/ASCII architecture diagram, suitable for keeping as framework documentation.
+Based on what we've built so far, I would represent the architecture like this:
+
+                         PLAYWRIGHT TEST EXECUTION
+                                   │
+                                   │
+                    ┌──────────────┴──────────────┐
+                    │                             │
+              ENVIRONMENT                      PROJECT
+                    │                             │
+                TEST_ENV                      --project
+                    │                             │
+          ┌─────────┼─────────┐          ┌────────┼────────┐
+          ↓         ↓         ↓          ↓        ↓        ↓
+         dev       uat       prod     chromium   edge    firefox
+          │         │         │                   │
+          ↓         ↓         ↓                   │
+     .env.dev   .env.uat   .env.prod              │
+          │         │         │                   │
+          └─────────┼─────────┘                   │
+                    ↓                             │
+          ┌─────────────────────┐                 │
+          │  Environment Config │                 │
+          │   env.config.ts     │                 │
+          └──────────┬──────────┘                 │
+                     │                            │
+                     │                            │
+              ┌──────┴───────┐                    │
+              │              │                    │
+              ↓              ↓                    │
+        Validate ENV     Validate Variables       │
+        dev/uat/prod     BASE_URL                 │
+                         APP_USERNAME             │
+                         APP_PASSWORD             │
+              │               │                   │
+              └───────┬───────┘                   │
+                      ↓                           │
+              Typed Environment                   │
+                   Config                         │
+                      │                           │
+                      └────────────┬──────────────┘
+                                   ↓
+                         playwright.config.ts
+                                   │
+                     ┌─────────────┼─────────────┐
+                     │             │             │
+                     ↓             ↓             ↓
+                  baseURL       Projects       Global
+                               Configuration   Settings
+                     │             │             │
+                     └─────────────┼─────────────┘
+                                   ↓
+                         PLAYWRIGHT EXECUTION
+                                   │
+                                   ↓
+                                  TEST
+                                   │
+                  ┌────────────────┼────────────────┐
+                  │                │                │
+                  ↓                ↓                ↓
+             Environment       Browser          Execution
+               agnostic        agnostic         agnostic
+                  │                │                │
+                  └────────────────┼────────────────┘
+                                   ↓
+                          Same Test Code
+
+==> Environment and Project are independent dimensions.   
+
+So a command like: npm run test:uat -- --project=edge
+can be visualized as:
+npm run test:uat
+       │
+       ↓
+TEST_ENV=uat
+       │
+       ↓
+   .env.uat
+       │
+       ↓
+Environment Config
+       │
+       ├── BASE_URL
+       ├── APP_USERNAME
+       └── APP_PASSWORD
+       │
+       ↓
+Playwright Config
+       │
+       ↓
+--project=edge
+       │
+       ↓
+ Microsoft Edge
+       │
+       ↓
+     TEST
+
+<!-- Future Enhancement roadmap: -->
+Then: Playwright configuration architecture
+
+After that, I'd tackle:
+
+playwright.config.ts
+
+We want it to become something like:
+
+playwright.config.ts
+        │
+        ├── global test settings
+        │
+        ├── environment configuration
+        │
+        ├── browser projects
+        │
+        ├── reporters
+        │
+        ├── retries
+        │
+        ├── workers
+        │
+        └── execution settings
+
+And keep the file readable rather than turning it into a 500-line configuration monster.
+
+Then comes the really important Playwright topic
+Fixtures
+
+This is where I'd take your framework to the next level.
+
+Instead of:
+
+test('Login', async ({ page }) => {
+
+eventually we'll have custom fixtures such as:
+
+test('Login', async ({ page, testUser }) => {
+
+or:
+
+test('Dashboard', async ({ authenticatedPage }) => {
+
+Fixtures are where Playwright starts becoming much more powerful than a simple Selenium-style framework.
+
+Then Page Object Model
+
+We'll build:
+
+pages/
+│
+├── LoginPage.ts
+├── HomePage.ts
+├── DashboardPage.ts
+└── ...
+
+But I don't want to blindly create one class per page.
+
+We'll discuss:
+
+what belongs in a Page Object
+what doesn't
+component objects
+avoiding giant Page Objects
+keeping tests readable
+Then Authentication
+
+You've already learned storageState, so we won't repeat the basics.
+
+We'll build something like:
+
+Authentication
+       │
+       ↓
+setup project
+       │
+       ↓
+storageState
+       │
+       ↓
+authenticated tests
+
+This is where Project Dependencies become extremely interesting.
+
+For example:
+
+setup
+  │
+  ├── login
+  ├── create storage state
+  │
+  ↓
+chromium
+firefox
+edge
+webkit
+
+That avoids logging in repeatedly for every test.
+
+Then Test Organization
+
+You specifically wanted this topic earlier, so we'll cover:
+
+test.describe()
+test.beforeEach()
+test.afterEach()
+
+but with an emphasis on:
+
+Hooks without overusing them
+
+We'll design a structure that stays maintainable when you have hundreds of tests.
+
+Then CI/CD
+
+Finally:
+
+Developer
+    ↓
+npm run test:dev
+    ↓
+Playwright
+    ↓
+Git
+    ↓
+Jenkins / GitHub Actions
+    ↓
+UAT
+    ↓
+Reports
+
+We'll deal with:
+
+environment variables in CI
+secrets
+parallel execution
+retries
+workers
+artifacts
+HTML reports
+traces
+screenshots
+videos
+failure handling
+My recommended roadmap from here
+
+I'd follow this sequence:
+
+              CURRENT POSITION
+                     │
+                     ▼
+        ┌─────────────────────────┐
+        │ Environment Architecture│ ✓
+        │ Playwright Projects     │ ✓
+        └────────────┬────────────┘
+                     │
+                     ▼
+          1. Configuration
+             Hardening
+                     │
+                     ▼
+          2. Playwright Fixtures
+                     │
+                     ▼
+          3. Page Object Model
+                     │
+                     ▼
+          4. Project Dependencies
+             + Authentication
+                     │
+                     ▼
+          5. Advanced Test
+             Organization
+                     │
+                     ▼
+          6. Test Data Management
+                     │
+                     ▼
+          7. API + UI Integration
+                     │
+                     ▼
+          8. Reporting & Debugging
+                     │
+                     ▼
+          9. CI/CD Architecture
+                     │
+                     ▼
+          10. Complete Framework
