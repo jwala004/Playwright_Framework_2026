@@ -19,7 +19,6 @@ on:
           - UAT
           - PROD
 
-
 jobs:
 
   test:
@@ -128,52 +127,52 @@ jobs:
       # -----------------------------------------
       # 8. Create report ZIP
       # -----------------------------------------
-      - name: Create Playwright Report ZIP
-        if: ${{ !cancelled() }}
+      # - name: Create Playwright Report ZIP
+      #   if: ${{ !cancelled() }}
 
-        run: |
-          zip -r playwright-report-${{ env.TEST_ENV }}.zip playwright-report/
+      #   run: |
+      #     zip -r playwright-report-${{ env.TEST_ENV }}.zip playwright-report/
 
 
       # -----------------------------------------
       # 9. Send email report
       # -----------------------------------------
-      - name: Send Playwright Report Email
-        if: ${{ !cancelled() }}
+      # - name: Send Playwright Report Email
+      #   if: ${{ !cancelled() }}
 
-        uses: dawidd6/action-send-mail@v18
+      #   uses: dawidd6/action-send-mail@v18
 
-        with:
+      #   with:
 
-          server_address: ${{ secrets.MAIL_SERVER }}
-          server_port: ${{ secrets.MAIL_PORT }}
-          secure: true
+      #     server_address: ${{ secrets.MAIL_SERVER }}
+      #     server_port: ${{ secrets.MAIL_PORT }}
+      #     secure: true
 
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
+      #     username: ${{ secrets.MAIL_USERNAME }}
+      #     password: ${{ secrets.MAIL_PASSWORD }}
 
-          subject: "Playwright Test Report - ${{ env.TEST_ENV }} - ${{ job.status }}"
+      #     subject: "Playwright Test Report - ${{ env.TEST_ENV }} - ${{ job.status }}"
 
-          to: ${{ secrets.REPORT_EMAIL_TO }}
+      #     to: ${{ secrets.REPORT_EMAIL_TO }}
 
-          from: ${{ secrets.MAIL_FROM }}
+      #     from: ${{ secrets.MAIL_FROM }}
 
-          body: |
-            Playwright Automation Execution Completed.
+      #     body: |
+      #       Playwright Automation Execution Completed.
 
-            Environment: ${{ env.TEST_ENV }}
-            Status: ${{ job.status }}
+      #       Environment: ${{ env.TEST_ENV }}
+      #       Status: ${{ job.status }}
 
-            Repository:
-            ${{ github.repository }}
+      #       Repository:
+      #       ${{ github.repository }}
 
-            Workflow:
-            ${{ github.workflow }}
+      #       Workflow:
+      #       ${{ github.workflow }}
 
-            Run:
-            ${{ github.run_number }}
+      #       Run:
+      #       ${{ github.run_number }}
 
-            View execution:
-            https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      #       View execution:
+      #       https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-          attachments: playwright-report-${{ env.TEST_ENV }}.zip
+      #     attachments: playwright-report-${{ env.TEST_ENV }}.zip
