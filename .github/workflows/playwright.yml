@@ -1,12 +1,9 @@
 name: Playwright Tests
 
 on:
-
-  # Daily scheduled execution
   schedule:
     - cron: '30 20 * * *'
 
-  # Manual execution
   workflow_dispatch:
     inputs:
       environment:
@@ -14,29 +11,23 @@ on:
         required: true
         type: choice
         options:
-          - qa
-          - uat
-          - prod
+          - QA
+          - UAT
+          - PROD
 
 jobs:
-
   test:
 
     timeout-minutes: 60
-
     runs-on: ubuntu-latest
 
-    # Scheduled run → PROD
-    # Manual run → selected environment
     environment: ${{ github.event_name == 'schedule' && 'PROD' || inputs.environment }}
 
     env:
-      TEST_ENV: ${{ github.event_name == 'schedule' && 'prod' || inputs.environment }}
+      TEST_ENV: ${{ github.event_name == 'schedule' && 'prod' || (inputs.environment == 'QA' && 'qa' || inputs.environment == 'UAT' && 'uat' || 'prod') }}
 
       BASE_URL: ${{ vars.BASE_URL }}
-
       APP_USERNAME: ${{ secrets.APP_USERNAME }}
-
       APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
 
     steps:
@@ -55,8 +46,27 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Display execution environment
-        run: echo "Running Playwright tests on $TEST_ENV environment"
+      - name: Verify environment configuration
+        run: |
+          echo "TEST_ENV=$TEST_ENV"
+
+          if [ -n "$BASE_URL" ]; then
+            echo "BASE_URL is available"
+          else
+            echo "BASE_URL is MISSING"
+          fi
+
+          if [ -n "$APP_USERNAME" ]; then
+            echo "APP_USERNAME is available"
+          else
+            echo "APP_USERNAME is MISSING"
+          fi
+
+          if [ -n "$APP_PASSWORD" ]; then
+            echo "APP_PASSWORD is available"
+          else
+            echo "APP_PASSWORD is MISSING"
+          fi
 
       - name: Run Playwright tests
         run: npm test
@@ -68,6 +78,77 @@ jobs:
           name: playwright-report-${{ env.TEST_ENV }}
           path: playwright-report/
           retention-days: 30
+
+# name: Playwright Tests
+
+# on:
+
+#   # Daily scheduled execution
+#   schedule:
+#     - cron: '30 20 * * *'
+
+#   # Manual execution
+#   workflow_dispatch:
+#     inputs:
+#       environment:
+#         description: 'Select environment'
+#         required: true
+#         type: choice
+#         options:
+#           - qa
+#           - uat
+#           - prod
+
+# jobs:
+
+#   test:
+
+#     timeout-minutes: 60
+
+#     runs-on: ubuntu-latest
+
+#     # Scheduled run → PROD
+#     # Manual run → selected environment
+#     environment: ${{ github.event_name == 'schedule' && 'PROD' || inputs.environment }}
+
+#     env:
+#       TEST_ENV: ${{ github.event_name == 'schedule' && 'prod' || inputs.environment }}
+
+#       BASE_URL: ${{ vars.BASE_URL }}
+
+#       APP_USERNAME: ${{ secrets.APP_USERNAME }}
+
+#       APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
+
+#     steps:
+
+#       - name: Checkout code
+#         uses: actions/checkout@v4
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v4
+#         with:
+#           node-version: lts/*
+
+#       - name: Install dependencies
+#         run: npm ci
+
+#       - name: Install Playwright Browsers
+#         run: npx playwright install --with-deps
+
+#       - name: Display execution environment
+#         run: echo "Running Playwright tests on $TEST_ENV environment"
+
+#       - name: Run Playwright tests
+#         run: npm test
+
+#       - name: Upload Playwright Report
+#         if: ${{ !cancelled() }}
+#         uses: actions/upload-artifact@v4
+#         with:
+#           name: playwright-report-${{ env.TEST_ENV }}
+#           path: playwright-report/
+#           retention-days: 30
 
 # name: Playwright Tests
 

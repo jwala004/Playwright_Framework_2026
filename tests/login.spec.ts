@@ -34,6 +34,6 @@ test('Login', async ({ page }) => {
         page.getByRole('heading', { name: 'Our Top Courses' })
     ).toBeVisible();
 
-    await page.pause();
+    // await page.pause();
 
 });
