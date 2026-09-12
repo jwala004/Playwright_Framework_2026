@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
  "scripts": {
-  "test:dev": "cross-env TEST_ENV=dev playwright test",
-  "test:dev:headed": "cross-env TEST_ENV=dev playwright test --headed",
+  "test:qa": "cross-env TEST_ENV=qa playwright test",
+  "test:qa:headed": "cross-env TEST_ENV=qa playwright test --headed",
 
   "test:uat": "cross-env TEST_ENV=uat playwright test",
   "test:uat:headed": "cross-env TEST_ENV=uat playwright test --headed",
 
   "test:prod": "cross-env TEST_ENV=prod playwright test",
-  "test:prod:headed": "cross-env TEST_ENV=prod playwright test --headed"
+  "test:prod:headed": "cross-env TEST_ENV=prod playwright test --headed",
+
+  "test": "playwright test" 
 },
   "keywords": [],
   "author": "",

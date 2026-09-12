@@ -12,3 +12,6 @@ node_modules/
 .env.dev
 .env.prod
 .env.uat
+
+# Environment directory
+env-files/

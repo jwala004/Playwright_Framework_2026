@@ -1,24 +1,12 @@
 import dotenv from 'dotenv';
 import path from 'path';
 
-const allowedEnvironments = ['dev', 'uat', 'prod'] as const; 
-/* 
-Why as const? 
-With: const allowedEnvironments = ['dev', 'uat', 'prod'] as const;
-
-TypeScript understands:
-readonly ['dev', 'uat', 'prod']
-which allows us to derive:
-type Environment = typeof allowedEnvironments[number];
-giving:
-type Environment = 'dev' | 'uat' | 'prod';
-This is a nice example of TypeScript doing actual framework-level work for us rather than merely annotating variables. 
-*/
+const allowedEnvironments = ['qa', 'uat', 'prod'] as const;
 
 type Environment = typeof allowedEnvironments[number];
 
 function getEnvironment(): Environment {
-    const environment = process.env.TEST_ENV || 'dev';
+    const environment = process.env.TEST_ENV || 'qa';
 
     if (!allowedEnvironments.includes(environment as Environment)) {
         throw new Error(
@@ -37,16 +25,21 @@ const envFilePath = path.resolve(
     `env-files/.env.${environment}`
 );
 
-const result = dotenv.config({
-    path: envFilePath
+/*
+ * Local execution:
+ * Loads .env.qa / .env.uat / .env.prod
+ *
+ * GitHub Actions:
+ * GitHub Environment variables/secrets are already
+ * available in process.env.
+ *
+ * override: false ensures externally supplied
+ * environment variables are never overwritten.
+ */
+dotenv.config({
+    path: envFilePath,
+    override: false
 });
-
-if (result.error) {
-    throw new Error(
-        `Unable to load environment file for environment "${environment}".\n` +
-        `Expected file: ${envFilePath}`
-    );
-}
 
 interface EnvironmentConfig {
     readonly environment: Environment;
@@ -61,8 +54,7 @@ function getRequiredEnvVariable(name: string): string {
     if (!value) {
         throw new Error(
             `Missing required environment variable "${name}" ` +
-            `for environment "${environment}". ` +
-            `Please check env-files/.env.${environment}`
+            `for environment "${environment}".`
         );
     }
 
@@ -78,11 +70,24 @@ export const config: EnvironmentConfig = {
 
     password: getRequiredEnvVariable('APP_PASSWORD')
 };
+/* 
+Why as const? 
+With: const allowedEnvironments = ['qa', 'uat', 'prod'] as const;
+
+TypeScript understands:
+readonly ['qa', 'uat', 'prod']
+which allows us to derive:
+type Environment = typeof allowedEnvironments[number];
+giving:
+type Environment = 'qa' | 'uat' | 'prod';
+This is a nice example of TypeScript doing actual framework-level work for us rather than merely annotating variables. 
+*/
+
 
 // import dotenv from 'dotenv';
 // import path from 'path';
 
-// const environment = process.env.TEST_ENV || 'dev';
+// const environment = process.env.TEST_ENV || 'qa';
 
 // const envFilePath = path.resolve(
 //     process.cwd(),
