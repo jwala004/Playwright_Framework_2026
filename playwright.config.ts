@@ -11,7 +11,7 @@ export default defineConfig({
         video: 'retain-on-failure'
     },
 
-    reporter: 'list',
+    reporter: 'html',
 
     projects: [
         {

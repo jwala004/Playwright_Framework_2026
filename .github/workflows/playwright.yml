@@ -2,9 +2,12 @@ name: Playwright Tests
 
 on:
 
+  # Daily PROD execution at 12:00 AM IST
   schedule:
-    - cron: '30 20 * * *'
+    - cron: '0 0 * * *'
+      timezone: 'Asia/Kolkata'
 
+  # Manual execution
   workflow_dispatch:
     inputs:
       environment:
@@ -15,6 +18,7 @@ on:
           - QA
           - UAT
           - PROD
+
 
 jobs:
 
@@ -32,25 +36,45 @@ jobs:
 
     steps:
 
+      # -----------------------------------------
+      # 1. Checkout
+      # -----------------------------------------
       - name: Checkout code
         uses: actions/checkout@v4
 
+
+      # -----------------------------------------
+      # 2. Setup Node
+      # -----------------------------------------
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
 
+
+      # -----------------------------------------
+      # 3. Install dependencies
+      # -----------------------------------------
       - name: Install dependencies
         run: npm ci
 
+
+      # -----------------------------------------
+      # 4. Install Playwright browsers
+      # -----------------------------------------
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
+
+      # -----------------------------------------
+      # 5. Verify environment
+      # -----------------------------------------
       - name: Verify GitHub Environment
         env:
           BASE_URL: ${{ vars.BASE_URL }}
           APP_USERNAME: ${{ secrets.APP_USERNAME }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
+
         run: |
           echo "======================================"
           echo "Environment: $TEST_ENV"
@@ -74,17 +98,82 @@ jobs:
             echo "APP_PASSWORD: MISSING"
           fi
 
+
+      # -----------------------------------------
+      # 6. Run Playwright tests
+      # -----------------------------------------
       - name: Run Playwright tests
         env:
           BASE_URL: ${{ vars.BASE_URL }}
           APP_USERNAME: ${{ secrets.APP_USERNAME }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
+
         run: npm test
 
+
+      # -----------------------------------------
+      # 7. Upload Playwright report
+      # -----------------------------------------
       - name: Upload Playwright Report
         if: ${{ !cancelled() }}
+
         uses: actions/upload-artifact@v4
+
         with:
           name: playwright-report-${{ env.TEST_ENV }}
           path: playwright-report/
           retention-days: 30
+
+
+      # -----------------------------------------
+      # 8. Create report ZIP
+      # -----------------------------------------
+      - name: Create Playwright Report ZIP
+        if: ${{ !cancelled() }}
+
+        run: |
+          zip -r playwright-report-${{ env.TEST_ENV }}.zip playwright-report/
+
+
+      # -----------------------------------------
+      # 9. Send email report
+      # -----------------------------------------
+      - name: Send Playwright Report Email
+        if: ${{ !cancelled() }}
+
+        uses: dawidd6/action-send-mail@v18
+
+        with:
+
+          server_address: ${{ secrets.MAIL_SERVER }}
+          server_port: ${{ secrets.MAIL_PORT }}
+          secure: true
+
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+
+          subject: "Playwright Test Report - ${{ env.TEST_ENV }} - ${{ job.status }}"
+
+          to: ${{ secrets.REPORT_EMAIL_TO }}
+
+          from: ${{ secrets.MAIL_FROM }}
+
+          body: |
+            Playwright Automation Execution Completed.
+
+            Environment: ${{ env.TEST_ENV }}
+            Status: ${{ job.status }}
+
+            Repository:
+            ${{ github.repository }}
+
+            Workflow:
+            ${{ github.workflow }}
+
+            Run:
+            ${{ github.run_number }}
+
+            View execution:
+            https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          attachments: playwright-report-${{ env.TEST_ENV }}.zip
