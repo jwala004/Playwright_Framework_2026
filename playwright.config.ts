@@ -2,8 +2,10 @@ import { defineConfig, devices } from '@playwright/test';
 import { config } from './config/env.config';
 
 export default defineConfig({
+    // Point to the TypeScript global setup file
+    globalSetup: require.resolve('./global-setup'),
     testDir: './tests',
-
+    
     use: {
         baseURL: config.baseUrl,
         trace: 'on-first-retry',
