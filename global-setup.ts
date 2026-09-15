@@ -5,15 +5,44 @@ import * as path from 'path';
 async function globalSetup(config: FullConfig): Promise<void> {
   // Read package.json dynamically to fetch installed dependency versions
   const packageJsonPath = path.resolve(__dirname, 'package.json');
-  let playwrightVersion = 'Unknown';
-  let typescriptVersion = 'Unknown';
+  // let playwrightVersion = 'Unknown';
+  // let typescriptVersion = 'Unknown';
 
-  if (fs.existsSync(packageJsonPath)) {
-    const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-    const allDeps = { ...pkg.dependencies, ...pkg.devDependencies };
+  let playwrightVersion = 'Not found';
+  let typescriptVersion = 'Not found';
+
+  // if (fs.existsSync(packageJsonPath)) {
+  //   const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+  //   const allDeps = { ...pkg.dependencies, ...pkg.devDependencies };
     
+  //   playwrightVersion = allDeps['@playwright/test'] || 'Not found';
+  //   typescriptVersion = allDeps['typescript'] || 'Not found';
+  // }
+
+if (fs.existsSync(packageJsonPath)) {
+    const pkg = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
+    
+    // Check across dependencies, devDependencies, and peerDependencies
+    const allDeps = { 
+      ...pkg.dependencies, 
+      ...pkg.devDependencies, 
+      ...pkg.peerDependencies 
+    };
+
     playwrightVersion = allDeps['@playwright/test'] || 'Not found';
-    typescriptVersion = allDeps['typescript'] || 'Not found';
+    
+    // Check if TypeScript is declared in package.json
+    if (allDeps['typescript']) {
+      typescriptVersion = allDeps['typescript'];
+    } else {
+      // Fallback: check if TypeScript compiler is globally/locally available at runtime
+      try {
+        const ts = require('typescript');
+        typescriptVersion = ts.version || 'Detected (Runtime)';
+      } catch {
+        typescriptVersion = 'Not listed in package.json';
+      }
+    }
   }
 
   // Print diagnostic summary
