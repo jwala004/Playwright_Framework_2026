@@ -5,21 +5,47 @@ export default defineConfig({
     // Point to the TypeScript global setup file
     globalSetup: require.resolve('./global-setup'),
     testDir: './tests',
-    
+    //   /* Run tests in files in parallel */
+    fullyParallel: true,
+
     use: {
         baseURL: config.baseUrl,
+        viewport: {
+            width: 1920,
+            height: 1080,
+        },
         trace: 'on-first-retry',
         screenshot: 'only-on-failure',
         video: 'retain-on-failure'
     },
 
-    reporter: 'html',
+    /* Retry on CI only */
+    retries: process.env.CI ? 2 : 0,
+    /* Opt out of parallel tests on CI. */
+    workers: Number(process.env.WORKERS ?? 3),
+    /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+    reporter: [
+        ['html', { open: 'never' }],
+        // ['allure-playwright']
+    ],
+    // reporter: 'html',
 
     projects: [
         {
             name: 'chromium',
             use: {
-                ...devices['Desktop Chrome']
+                ...devices['Desktop Chrome'],
+                headless: false,
+            }
+        },
+
+        {
+            name: 'edge',
+            use: {
+                ...devices['Desktop edge'],
+                 channel: 'msedge',
+                 headless: true,
+                //  slowMo: 500
             }
         },
 
@@ -33,29 +59,20 @@ export default defineConfig({
         //     }
         // }, // command: npm run test:dev:headed -- --project="Microsoft Edge"
 
-          {
-            name: 'edge',
-            use: {
-                ...devices['Desktop edge'],
-                 channel: 'msedge',
-                //  headless: false,
-                //  slowMo: 500
-            }
-        },
-
-        {
-            name: 'firefox',
-            use: {
-                ...devices['Desktop Firefox']
-            }
-        },
-
-        {
-            name: 'webkit',
-            use: {
-                ...devices['Desktop Safari']
-            }
-        }
+        // 
+        // {
+        //     name: 'firefox',
+        //     use: {
+        //         ...devices['Desktop Firefox']
+        //     }
+        // },
+        // 
+        // {
+        //     name: 'webkit',
+        //     use: {
+        //         ...devices['Desktop Safari']
+        //     }
+        // }
     ]
 });
 

@@ -52,7 +52,7 @@ if (fs.existsSync(packageJsonPath)) {
   console.log(`🟢 Node.js Version : ${process.version}`);
   console.log(`🟢 OS Platform     : ${process.platform} (${process.arch})`);
   console.log(`🟢 Playwright      : ${playwrightVersion}`);
-  console.log(`🟢 TypeScript      : ${typescriptVersion}`);
+  console.log(`🟢 TypeScript      : ${typescriptVersion}`); // it still needs some refactoring and modification
   console.log(`🟢 Workers Count   : ${config.workers}`);
   console.log(`🟢 CI Environment  : ${process.env.CI ? 'Yes (GitHub Actions)' : 'No (Local Machine)'}`);
   console.log('==================================================\n');

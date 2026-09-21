@@ -37,6 +37,7 @@ The desired execution model is:
 2. High-Level Architecture
 
 The recommended architecture separates test code, environment configuration, and secrets.
+
 ┌────────────────────────────────────────────────────────────┐
 │                    PLAYWRIGHT FRAMEWORK                    │
 └────────────────────────────────────────────────────────────┘
@@ -729,7 +730,7 @@ process.env
 env.config.ts
        │
        ▼
-config
+    config
        │
        ├── config.baseUrl
        ├── config.username

@@ -24,13 +24,12 @@ type Environment = 'qa' | 'uat' | 'prod';
 
 type Environment = typeof allowedEnvironments[number];
 
-
 /**
  * Determines the environment in which the tests should run.
  */
 function getEnvironment(): Environment {
 
-    const environment = process.env.TEST_ENV || 'qa';
+    const environment = process.env.TEST_ENV || 'uat';
 
     if (!allowedEnvironments.includes(environment as Environment)) {
 
@@ -43,9 +42,7 @@ function getEnvironment(): Environment {
     return environment as Environment;
 }
 
-
 const environment = getEnvironment();
-
 
 /**
  * Local environment file path.
@@ -59,7 +56,6 @@ const envFilePath = path.resolve(
     process.cwd(),
     `env-files/.env.${environment}`
 );
-
 
 /**
  * Load local .env file only if it exists.
@@ -90,7 +86,6 @@ if (fs.existsSync(envFilePath)) {
     );
 }
 
-
 interface EnvironmentConfig {
 
     readonly environment: Environment;
@@ -101,7 +96,6 @@ interface EnvironmentConfig {
 
     readonly password: string;
 }
-
 
 /**
  * Retrieves a required environment variable.
@@ -128,7 +122,6 @@ function getRequiredEnvVariable(name: string): string {
 
     return value;
 }
-
 
 export const config: EnvironmentConfig = {
 

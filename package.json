@@ -7,18 +7,15 @@
     "node": ">=24.0.0 <25.0.0",
     "npm": ">=10.0.0"
   },
- "scripts": {
-  "test:qa": "cross-env TEST_ENV=qa playwright test",
-  "test:qa:headed": "cross-env TEST_ENV=qa playwright test --headed",
-
-  "test:uat": "cross-env TEST_ENV=uat playwright test",
-  "test:uat:headed": "cross-env TEST_ENV=uat playwright test --headed",
-
-  "test:prod": "cross-env TEST_ENV=prod playwright test",
-  "test:prod:headed": "cross-env TEST_ENV=prod playwright test --headed",
-
-  "test": "playwright test" 
-},
+  "scripts": {
+    "test:qa": "cross-env TEST_ENV=qa playwright test",
+    "test:qa:headed": "cross-env TEST_ENV=qa playwright test --headed",
+    "test:uat": "cross-env TEST_ENV=uat playwright test",
+    "test:uat:headed": "cross-env TEST_ENV=uat playwright test --headed",
+    "test:prod": "cross-env TEST_ENV=prod playwright test",
+    "test:prod:headed": "cross-env TEST_ENV=prod playwright test --headed",
+    "test": "playwright test"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -26,7 +23,8 @@
   "devDependencies": {
     "@playwright/test": "^1.62.1",
     "@types/node": "^26.1.2",
-    "cross-env": "^10.1.0"
+    "cross-env": "^10.1.0",
+    "prettier": "^3.9.8"
   },
   "dependencies": {
     "dotenv": "^17.4.2"
