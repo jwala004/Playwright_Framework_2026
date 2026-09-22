@@ -42,15 +42,15 @@ export default defineConfig({
             }
         },
 
-        {
-            name: 'edge',
-            use: {
-                ...devices['Desktop Edge'],
-                 channel: 'msedge',
-                //  headless: true, // not needed, as headless is already set in the global use options
-                //  slowMo: 500
-            }
-        },
+        // {
+        //     name: 'edge',
+        //     use: {
+        //         ...devices['Desktop Edge'],
+        //          channel: 'msedge',
+        //         //  headless: true, // not needed, as headless is already set in the global use options
+        //         //  slowMo: 500
+        //     }
+        // },
 
         // {
         //     name: 'Microsoft Edge',
