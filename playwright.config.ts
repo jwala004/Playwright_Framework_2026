@@ -19,7 +19,7 @@ export default defineConfig({
         video: 'retain-on-failure',
         // Force headless mode in CI environments
         // headless: process.env.CI ? true : false,
-        headless: false,
+        headless: true,
     },
 
     /* Retry on CI only */
