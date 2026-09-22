@@ -1,12 +1,15 @@
 import { defineConfig, devices } from '@playwright/test';
 import { config } from './config/env.config';
+import path from 'path';
+
+const STORAGE_STATE = path.join(__dirname, "./playwright/.auth/user.json");
 
 export default defineConfig({
     // Point to the TypeScript global setup file
     globalSetup: require.resolve('./global-setup'),
     testDir: './tests',
-    //   /* Run tests in files in parallel */
-    // fullyParallel: true,
+    /* Run tests in files in parallel */
+    fullyParallel: true,
 
     use: {
         baseURL: config.baseUrl,
@@ -35,12 +38,20 @@ export default defineConfig({
     // reporter: 'html',
 
     projects: [
+        // 1. Setup Project: Executes auth.setup.ts first
+        {
+            name: 'setup',
+            testMatch: /.*\.setup\.ts/,
+        },
+
         {
             name: 'chromium',
             use: {
                 ...devices['Desktop Chrome'],
+                storageState: STORAGE_STATE, // Automatically injects cookies & localStorage
                 // headless: true, // not needed, as headless is already set in the global use options
-            }
+            },
+            dependencies: ['setup'], // Ensures setup finishes before running these tests
         },
 
         // {

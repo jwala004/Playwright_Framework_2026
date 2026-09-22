@@ -56,7 +56,7 @@ async function globalSetup(config: FullConfig): Promise<void> {
   console.log(`🟢 Workers Count   : ${config.workers}`);
   console.log(`🟢 CI Environment  : ${process.env.CI ? 'Yes (GitHub Actions)' : 'No (Local Machine)'}`);
 
-    // temporary debug info for headless
+  // temporary debug info for headless
   console.log(`🟢 PWDEBUG          : ${process.env.PWDEBUG ?? 'Not set'}`);
   console.log(`🟢 DEBUG            : ${process.env.DEBUG ?? 'Not set'}`);
   console.log(`🟢 Projects Count   : ${config.projects.length}`);
