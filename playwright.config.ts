@@ -16,13 +16,16 @@ export default defineConfig({
         },
         trace: 'on-first-retry',
         screenshot: 'only-on-failure',
-        video: 'retain-on-failure'
+        video: 'retain-on-failure',
+        // Force headless mode in CI environments
+        headless: process.env.CI ? true : false,
     },
 
     /* Retry on CI only */
     retries: process.env.CI ? 2 : 0,
     /* Opt out of parallel tests on CI. */
-    workers: Number(process.env.WORKERS ?? 3),
+    // Use 2 workers in CI (matches 2 vCPUs), fallback to environment variable or 3 locally
+    workers: process.env.CI ? 2 : Number(process.env.WORKERS ?? 3),
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
     reporter: [
         ['html', { open: 'never' }],
