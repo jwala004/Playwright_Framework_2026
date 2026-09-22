@@ -18,7 +18,8 @@ export default defineConfig({
         screenshot: 'only-on-failure',
         video: 'retain-on-failure',
         // Force headless mode in CI environments
-        headless: process.env.CI ? true : false,
+        // headless: process.env.CI ? true : false,
+        headless: false,
     },
 
     /* Retry on CI only */
