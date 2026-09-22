@@ -6,7 +6,7 @@ export default defineConfig({
     globalSetup: require.resolve('./global-setup'),
     testDir: './tests',
     //   /* Run tests in files in parallel */
-    fullyParallel: true,
+    // fullyParallel: true,
 
     use: {
         baseURL: config.baseUrl,
