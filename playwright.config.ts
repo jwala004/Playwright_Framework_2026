@@ -38,16 +38,16 @@ export default defineConfig({
             name: 'chromium',
             use: {
                 ...devices['Desktop Chrome'],
-                headless: true,
+                // headless: true, // not needed, as headless is already set in the global use options
             }
         },
 
         {
             name: 'edge',
             use: {
-                ...devices['Desktop edge'],
+                ...devices['Desktop Edge'],
                  channel: 'msedge',
-                 headless: true,
+                //  headless: true, // not needed, as headless is already set in the global use options
                 //  slowMo: 500
             }
         },
@@ -56,7 +56,7 @@ export default defineConfig({
         //     name: 'Microsoft Edge',
         //     use: {
         //         ...devices['Desktop Edge'],
-        //          headless: false,
+        //          headless: false, // not needed, as headless is already set in the global use options
         //          channel: 'msedge',
         //          slowMo: 500
         //     }
