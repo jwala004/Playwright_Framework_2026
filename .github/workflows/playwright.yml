@@ -93,7 +93,16 @@ jobs:
             echo "APP_PASSWORD: MISSING"
           fi
 
-
+      - name: Diagnose Playwright environment
+        run: |
+          echo "======================================"
+          echo "Playwright Environment Diagnostics"
+          echo "======================================"
+          echo "CI=$CI"
+          echo "PWDEBUG=$PWDEBUG"
+          echo "DEBUG=$DEBUG"
+          echo "PLAYWRIGHT_BROWSERS_PATH=$PLAYWRIGHT_BROWSERS_PATH"
+          echo "======================================"
       # -----------------------------------------
       # 6. Run Playwright tests
       # -----------------------------------------

@@ -8,11 +8,11 @@ export class BasePage {
     }
 
     protected async getNormalizedText(locator: Locator): Promise<string> {
-                return (await locator.innerText()).replace(/\s+/g, " ").trim()
+        return (await locator.innerText()).replace(/\s+/g, " ").trim()
     }
 
     async goToUrl(url: string, description: string = "page"): Promise<void> {
-            await this.page.goto(url, { waitUntil: "domcontentloaded" })
+        await this.page.goto(url, { waitUntil: "domcontentloaded" })
     }
 
     // Just for dummy purpose to use how we can write this kind of function
