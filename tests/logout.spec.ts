@@ -20,3 +20,16 @@ test.describe("Login - Logout functionality test", () => {
     })
 
 })
+
+test('Login - Logout : All in a single test-case', async({page, landingPage, loginPage, logoutPage}) =>{
+    // launch the application
+    await landingPage.navigateToLandingPage()
+    await landingPage.navigateToLoginPopUp()
+
+    // verify login
+    await loginPage.login(config.username, config.password)
+    await expect(page.locator('span.bg-gradient-to-br', { hasText: 'J' })).toBeVisible()
+
+    // logout from the application
+    await logoutPage.logout()
+})
