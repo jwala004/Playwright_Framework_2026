@@ -14,7 +14,7 @@ export class LandingPage extends BasePage {
         await this.goToUrl('/')
     }
     async getPageTitle() {
-        return await this.page.title()
+        await this.page.title()
     }
 
     async getCopyrightText() {
@@ -24,6 +24,12 @@ export class LandingPage extends BasePage {
     async navigateToLoginPopUp() {
         await this.loginButtonOnHomePage.click();
     }
+
+    // Expose the private locator safely
+    get loginButton(): Locator {
+        return this.loginButtonOnHomePage;
+    }
+
     async navigateToRegisterPage() {
         // await this.myAccount.click();
         // await this.register.click();

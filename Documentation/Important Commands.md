@@ -14,4 +14,11 @@ This is an important command.
 # It means:TEST_ENV=dev + Project = chromium
 # So: DEV + Chromium only.
 
-4. 
+4. Running a single test-case file from powershell;
+$env:TEST_ENV="uat"; npx playwright test tests/loginreaddatafromjson.spec.ts --headed --project=chromium
+
+$env:TEST_ENV="uat"; npx playwright test tests/loginreaddatafromjson.spec.ts --headed --project=edge
+
+
+5. 
+

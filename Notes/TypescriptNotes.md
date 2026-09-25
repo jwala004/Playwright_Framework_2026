@@ -145,7 +145,7 @@ Output:
 🔹 Arrow Functions
 Shorter and modern syntax for writing functions.
 Example: 
-const sayHello = ()=> { // or adding return type to function const sayHello = (): void=> {
+const sayHello = ()=> { // or adding return type to function const sayHello = (): void => {
     console.log("Hello")
 }
 sayHello() // function is called here

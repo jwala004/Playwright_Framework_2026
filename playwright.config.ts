@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 import { config } from './config/env.config';
 import path from 'path';
 
-const STORAGE_STATE = path.join(__dirname, "./playwright/.auth/user.json");
+// const STORAGE_STATE = path.join(__dirname, "./playwright/.auth/user.json");
 
 export default defineConfig({
     // Point to the TypeScript global setup file
@@ -13,10 +13,10 @@ export default defineConfig({
 
     use: {
         baseURL: config.baseUrl,
-        viewport: {
-            width: 1920,
-            height: 1080,
-        },
+        // viewport: {
+        //     width: 1920,
+        //     height: 1080,
+        // },
         trace: 'on-first-retry',
         screenshot: 'only-on-failure',
         video: 'retain-on-failure',
@@ -43,26 +43,25 @@ export default defineConfig({
             name: 'setup',
             testMatch: /.*\.setup\.ts/,
         },
-
         {
             name: 'chromium',
+            dependencies: ['setup'], // Ensures setup finishes before running these tests
             use: {
                 ...devices['Desktop Chrome'],
-                storageState: STORAGE_STATE, // Automatically injects cookies & localStorage
+                storageState: './playwright/.auth/user.json', // Automatically injects cookies & localStorage
                 // headless: true, // not needed, as headless is already set in the global use options
-            },
-            dependencies: ['setup'], // Ensures setup finishes before running these tests
+            }
         },
 
-        // {
-        //     name: 'edge',
-        //     use: {
-        //         ...devices['Desktop Edge'],
-        //          channel: 'msedge',
-        //         //  headless: true, // not needed, as headless is already set in the global use options
-        //         //  slowMo: 500
-        //     }
-        // },
+        {
+            name: 'edge',
+            use: {
+                ...devices['Desktop Edge'],
+                 channel: 'msedge',
+                //  headless: true, // not needed, as headless is already set in the global use options
+                //  slowMo: 500
+            }
+        },
 
         // {
         //     name: 'Microsoft Edge',
