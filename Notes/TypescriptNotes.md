@@ -17,7 +17,7 @@ This prevents invalid data and reduces mistakes.
 Required to run JavaScript and TypeScript outside the browser.
 🔹 VS Code
 Used to write, manage, and debug TypeScript projects.
-🔹 TypeScript Installed
+🔹 TypeScript installed
 Needed to compile TypeScript files into JavaScript.
 To install Typescript globally or in vs code, use command => npm install -g typescript
 
@@ -31,24 +31,31 @@ Execute both ts and js file all at once in a single command, like below;
 ⇒ tsc typescript-practce.ts && node typescript-practce.js
 It will execute both commands at once, or we need to run one by one.
 
+Example;
+const num : number = 10;
+const str : string = 'jwala'
+
+console.log(num) // 10
+console.log(str) // jwala
 
 # Data Types
 Data types define what kind of data a variable holds.
 
-🔹 String
+🔹 string
 Stores text values like names or URLs.
 let nameVal: string = 'Jwala'
 let description: string = nameVal + ' is best'
+
 we can also use double quotes, to declare string like,  let nameVal: string = "Jwala"
 Or a better way to concatenate variables; using backticks to declare variables
 let nameVal: string = 'Jwala'
 let description: string = `${nameVal} is best` 
 
-🔹 Number
+🔹 number
 Stores numeric values such as counts or timeouts.
 let count: number = 9
 
-🔹 Boolean
+🔹 boolean
 Stores true or false values for checks and validations.
 let isVisible: boolean = false
 
@@ -56,7 +63,6 @@ let isVisible: boolean = false
 Example;
 let num1: any = 20
 num1 = 'abc'
-
 
 # 🔹 Arrays
 => Arrays store multiple values of the same type in a list.
@@ -77,12 +83,17 @@ console.log(users[1]); // 35
 # 🔹 Objects with Types
 Objects group related data together with defined structure and types.
 Example: 
-let userDetails: {username: string,
-                password: string,
-                age: number} = {username: 'jk004',
-                passwprd: 'pass123',
-                age: 20
+let userDetails:{
+                  username: string,
+                  password: string,
+                  age: number
+                } 
+                = {
+                  username: 'jk004',
+                  passwprd: 'pass123',
+                  age: 20
                 }
+
 console.log(userDetails.age); // 20                
 
 # 🔹 Why Types Help
@@ -145,7 +156,7 @@ Output:
 🔹 Arrow Functions
 Shorter and modern syntax for writing functions.
 Example: 
-const sayHello = ()=> { // or adding return type to function const sayHello = (): void => {
+const sayHello = () => { // or adding return type to function const sayHello = (): void => {
     console.log("Hello")
 }
 sayHello() // function is called here
@@ -161,6 +172,7 @@ function greet(name?: string){ // question mark is used to mark parameters as op
 }
 greet("Jwala") // function is called here
 greet() // function is called here
+
 Output: 
 Hello undefined// when called without parameters
 Hello Jwala // when called with parameters
@@ -205,7 +217,6 @@ console.log(age >= 18 && isElgibleToVote) // true
 console.log(age <= 18 || isElgibleToVote) // true
 console.log(age <= 18 || !isElgibleToVote) // false
 console.log(! (age>=18)) // false
-
 
 # Conditions (if / else)
 Conditions allow the program to make decisions based on true or false results.

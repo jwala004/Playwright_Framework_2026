@@ -25,11 +25,6 @@ export class LandingPage extends BasePage {
         await this.loginButtonOnHomePage.click();
     }
 
-    // Expose the private locator safely
-    get loginButton(): Locator {
-        return this.loginButtonOnHomePage;
-    }
-
     async navigateToRegisterPage() {
         // await this.myAccount.click();
         // await this.register.click();

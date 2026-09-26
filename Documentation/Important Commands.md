@@ -19,6 +19,7 @@ $env:TEST_ENV="uat"; npx playwright test tests/loginreaddatafromjson.spec.ts --h
 
 $env:TEST_ENV="uat"; npx playwright test tests/loginreaddatafromjson.spec.ts --headed --project=edge
 
+$env:TEST_ENV="uat"; npx playwright test tests/logout.spec.ts --headed --project=edge
 
 5. 
 
