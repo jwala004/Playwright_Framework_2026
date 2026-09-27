@@ -18,15 +18,21 @@ on:
           - UAT
           - PROD
 
+# Least privilege
+permissions:
+  contents: read       
+
+# Prevent overlapping executions for the same environment
+concurrency:
+  group: playwright-${{ github.workflow }}-${{ github.event_name == 'schedule' && 'prod' || inputs.environment }}
+  cancel-in-progress: false   
+
 jobs:
   test:
     timeout-minutes: 60
-
     runs-on: ubuntu-latest
-
     environment:
       name: ${{ github.event_name == 'schedule' && 'PROD' || inputs.environment }}
-
     env:
       TEST_ENV: ${{ github.event_name == 'schedule' && 'prod' || (inputs.environment == 'QA' && 'qa' || inputs.environment == 'UAT' && 'uat' || 'prod') }}
 
@@ -58,9 +64,9 @@ jobs:
         run: npx playwright install --with-deps
 
       # -----------------------------------------
-      # 5. Verify environment
+      # 5. Validate environment configuration
       # -----------------------------------------
-      - name: Verify GitHub Environment
+      - name: Validate test environment configuration on Github
         env:
           BASE_URL: ${{ vars.BASE_URL }}
           APP_USERNAME: ${{ secrets.APP_USERNAME }}
@@ -118,17 +124,32 @@ jobs:
         run: npm test
 
       # -----------------------------------------
-      # 7. Upload Playwright report
+      # 7. Upload Playwright HTML report
       # -----------------------------------------
-      - name: Upload Playwright Report
-        if: ${{ !cancelled() }}
+      - name: Upload Playwright HTML Report
+        if: ${{ always() }} # Regardless of whether tests passed or failed or cancelled, upload the report
 
         uses: actions/upload-artifact@v4
 
         with:
-          name: playwright-report-${{ env.TEST_ENV }}
+          name: playwright-report-${{ env.TEST_ENV }}-${{ github.run_number }}
           path: playwright-report/
           retention-days: 30
+          if-no-files-found: warn
+
+      # -----------------------------------------
+      # 8. Upload test results
+      # -----------------------------------------
+      - name: Upload Test Results
+        if: ${{ always() }}
+
+        uses: actions/upload-artifact@v4
+
+        with:
+          name: playwright-test-results-${{ env.TEST_ENV }}-${{ github.run_number }}
+          path: test-results/
+          retention-days: 30
+          if-no-files-found: warn      
 
       # -----------------------------------------
       # 8. Create report ZIP

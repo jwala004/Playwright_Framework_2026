@@ -32,10 +32,15 @@ export default defineConfig({
     workers: process.env.CI ? 2 : Number(process.env.WORKERS ?? 3),
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
     reporter: [
-        ['html', { open: 'never' }],
-        // ['allure-playwright']
+    ['html', {
+        outputFolder: 'playwright-report',
+        open: 'never'
+    }],
+    ['junit', {
+        outputFile: 'test-results/junit.xml'
+    }],
+    // ['allure-playwright']
     ],
-    // reporter: 'html',
 
     projects: [
         // 1. Setup Project: Executes auth.setup.ts first
