@@ -17,12 +17,16 @@ export default defineConfig({
         //     width: 1920,
         //     height: 1080,
         // },
-        trace: 'on-first-retry',
+        // Force headless mode in CI environments
+        headless: process.env.CI ? true : false,
         screenshot: 'only-on-failure',
         video: 'retain-on-failure',
-        // Force headless mode in CI environments
-        // headless: process.env.CI ? true : false,
-        headless: true,
+        /* 
+     * TRACE: Essential for debugging.
+     * CI: Capture only on retries to save memory and storage.
+     * Local: Retain on failure for instant debugging without retries.
+     */
+        trace: process.env.CI ? 'on-first-retry' : 'retain-on-failure',
     },
 
     /* Retry on CI only */
@@ -32,14 +36,14 @@ export default defineConfig({
     workers: process.env.CI ? 2 : Number(process.env.WORKERS ?? 3),
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
     reporter: [
-    ['html', {
-        outputFolder: 'playwright-report',
-        open: 'never'
-    }],
-    ['junit', {
-        outputFile: 'test-results/junit.xml'
-    }],
-    // ['allure-playwright']
+        ['html', {
+            outputFolder: 'html-reports',
+            open: 'never'
+        }],
+        ['junit', {
+            outputFile: 'test-results/junit.xml'
+        }],
+        ['allure-playwright', { outputFolder: "allure-results" }]
     ],
 
     projects: [
@@ -62,7 +66,7 @@ export default defineConfig({
             name: 'edge',
             use: {
                 ...devices['Desktop Edge'],
-                 channel: 'msedge',
+                channel: 'msedge',
                 //  headless: true, // not needed, as headless is already set in the global use options
                 //  slowMo: 500
             }

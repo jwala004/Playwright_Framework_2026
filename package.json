@@ -14,7 +14,10 @@
     "test:uat:headed": "cross-env TEST_ENV=uat playwright test --headed",
     "test:prod": "cross-env TEST_ENV=prod playwright test",
     "test:prod:headed": "cross-env TEST_ENV=prod playwright test --headed",
-    "test": "playwright test"
+    "test": "playwright test",
+    "allure:generate": "npx allure generate allure-results --clean",
+    "allure:open": "npx allure open allure-report",
+    "allure:serve": "npx allure serve allure-results"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +26,9 @@
   "devDependencies": {
     "@playwright/test": "^1.62.1",
     "@types/node": "^26.1.2",
+    "allure": "^3.19.0",
+    "allure-commandline": "^2.46.1",
+    "allure-playwright": "^3.12.2",
     "cross-env": "^10.1.0",
     "prettier": "^3.9.8"
   },
