@@ -8,13 +8,13 @@
     "npm": ">=10.0.0"
   },
   "scripts": {
-    "test:qa": "cross-env TEST_ENV=qa playwright test",
-    "test:qa:headed": "cross-env TEST_ENV=qa playwright test --headed",
-    "test:uat": "cross-env TEST_ENV=uat playwright test",
-    "test:uat:headed": "cross-env TEST_ENV=uat playwright test --headed",
-    "test:prod": "cross-env TEST_ENV=prod playwright test",
-    "test:prod:headed": "cross-env TEST_ENV=prod playwright test --headed",
-    "test": "playwright test",
+    "clean:allure": "rimraf allure-results allure-report",
+    "test:qa": "npm run clean:allure && cross-env TEST_ENV=qa playwright test",
+    "test:qa:headed": "npm run clean:allure && cross-env TEST_ENV=qa playwright test --headed",
+    "test:uat": "npm run clean:allure && cross-env TEST_ENV=uat playwright test",
+    "test:uat:headed": "npm run clean:allure && cross-env TEST_ENV=uat playwright test --headed",
+    "test:prod": "npm run clean:allure && cross-env TEST_ENV=prod playwright test",
+    "test:prod:headed": "npm run clean:allure && cross-env TEST_ENV=prod playwright test --headed",
     "allure:generate": "npx allure generate allure-results --clean",
     "allure:open": "npx allure open allure-report",
     "allure:serve": "npx allure serve allure-results"
@@ -29,7 +29,8 @@
     "allure": "^3.19.0",
     "allure-playwright": "^3.12.2",
     "cross-env": "^10.1.0",
-    "prettier": "^3.9.8"
+    "prettier": "^3.9.8",
+    "rimraf": "^6.1.3"
   },
   "dependencies": {
     "dotenv": "^17.4.2"
