@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Run Playwright Tests
 
 on:
   # Daily PROD execution at 12:20 AM IST
@@ -20,12 +20,12 @@ on:
 
 # Least privilege
 permissions:
-  contents: read       
+  contents: read
 
 # Prevent overlapping executions for the same environment
 concurrency:
   group: playwright-${{ github.workflow }}-${{ github.event_name == 'schedule' && 'prod' || inputs.environment }}
-  cancel-in-progress: false   
+  cancel-in-progress: false
 
 jobs:
   test:
@@ -136,7 +136,6 @@ jobs:
           path: playwright-report/
           retention-days: 30
           if-no-files-found: warn
-
       # -----------------------------------------
       # 8. Upload test results
       # -----------------------------------------
@@ -149,8 +148,25 @@ jobs:
           name: playwright-test-results-${{ env.TEST_ENV }}-${{ github.run_number }}
           path: test-results/
           retention-days: 30
-          if-no-files-found: warn      
+          if-no-files-found: warn
 
+      # -----------------------------------------
+      # 9. Generate Allure report
+      # -----------------------------------------       
+      - name: Generate Allure report
+        if: always()
+        run: npm run allure:generate
+
+      # -----------------------------------------
+      # 10. Upload Allure report
+      # -----------------------------------------
+      - name: Upload Allure report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report/
+          
       # -----------------------------------------
       # 8. Create report ZIP
       # -----------------------------------------
