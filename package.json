@@ -15,7 +15,7 @@
     "test:uat:headed": "npm run clean:allure && cross-env TEST_ENV=uat playwright test --headed",
     "test:prod": "npm run clean:allure && cross-env TEST_ENV=prod playwright test",
     "test:prod:headed": "npm run clean:allure && cross-env TEST_ENV=prod playwright test --headed",
-    "allure:generate": "npx allure generate allure-results --clean",
+    "allure:generate": "npx allure generate allure-results",
     "allure:open": "npx allure open allure-report",
     "allure:serve": "npx allure serve allure-results"
   },
