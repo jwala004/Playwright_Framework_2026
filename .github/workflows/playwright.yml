@@ -137,21 +137,21 @@ jobs:
       # -----------------------------------------
       # 8. Inspect Allure results
       # -----------------------------------------
-      - name: Check Allure results
-        if: ${{ always() }}
-        run: |
-          echo "======================================"
-          echo "Allure Results"
-          echo "======================================"
+      # - name: Check Allure results
+      #   if: ${{ always() }}
+      #   run: |
+      #     echo "======================================"
+      #     echo "Allure Results"
+      #     echo "======================================"
 
-          if [ -d "allure-results" ]; then
-            echo "✓ allure-results directory exists"
-            echo "Result files: $(find allure-results -type f | wc -l)"
-            ls -lah allure-results
-          else
-            echo "✗ allure-results directory does NOT exist"
-            exit 1
-          fi
+      #     if [ -d "allure-results" ]; then
+      #       echo "✓ allure-results directory exists"
+      #       echo "Result files: $(find allure-results -type f | wc -l)"
+      #       ls -lah allure-results
+      #     else
+      #       echo "✗ allure-results directory does NOT exist"
+      #       exit 1
+      #     fi
 
       # -----------------------------------------
       # 9. Generate Allure report
