@@ -138,7 +138,7 @@ jobs:
       # 8. Inspect Allure results
       # -----------------------------------------
       - name: Check Allure results
-        if: ${{ !cancelled() }}
+        if: ${{ !always() }}
         run: |
           echo "======================================"
           echo "Allure Results"
@@ -157,7 +157,7 @@ jobs:
       # 9. Generate Allure report
       # -----------------------------------------
       - name: Generate Allure report
-        if: ${{ !cancelled() }}
+        if: ${{ !always() }}
         run: |
           echo "======================================"
           echo "Generating Allure Report"
@@ -169,7 +169,7 @@ jobs:
       # 10. Verify Allure report
       # -----------------------------------------
       - name: Verify Allure report
-        if: ${{ !cancelled() }}
+        if: ${{ !always() }}
         run: |
           echo "======================================"
           echo "Verifying Allure Report"
@@ -187,7 +187,7 @@ jobs:
       # 11. Upload Playwright HTML report
       # -----------------------------------------
       - name: Upload Playwright HTML Report
-        if: ${{ !cancelled() }}
+        if: ${{ !always() }}
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-${{ env.TEST_ENV }}-${{ github.run_number }}
@@ -199,7 +199,7 @@ jobs:
       # 12. Upload Playwright test results
       # -----------------------------------------
       - name: Upload Playwright test results
-        if: ${{ !cancelled() }}
+        if: ${{ !always() }}
         uses: actions/upload-artifact@v4
         with:
           name: playwright-test-results-${{ env.TEST_ENV }}-${{ github.run_number }}
@@ -211,7 +211,7 @@ jobs:
       # 13. Upload Allure report
       # -----------------------------------------
       - name: Upload Allure report
-        if: ${{ !cancelled() }}
+        if: ${{ !always() }}
         uses: actions/upload-artifact@v4
         with:
           name: allure-report-${{ env.TEST_ENV }}-${{ github.run_number }}
@@ -223,7 +223,7 @@ jobs:
       # 14. GitHub Actions summary
       # -----------------------------------------
       - name: Build Summary
-        if: ${{ !cancelled() }}
+        if: ${{ !always() }}
         run: |
           echo "## Allure Report Generated" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
