@@ -15,5 +15,6 @@ playwright show-report "path_of_report"
 Like exmpale below;
 
 playwright show-report "C:\Users\Jwala\Downloads\playwright-report"
+playwright show-report "C:\Users\jkkj0\Downloads\html-report-prod-42"
 
 It will launch the report in chrome browser.
