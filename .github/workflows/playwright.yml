@@ -31,12 +31,15 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+
     environment:
       name: ${{ github.event_name == 'schedule' && 'PROD' || inputs.environment }}
+
     env:
       TEST_ENV: ${{ github.event_name == 'schedule' && 'prod' || (inputs.environment == 'QA' && 'qa' || inputs.environment == 'UAT' && 'uat' || 'prod') }}
 
     steps:
+
       # -----------------------------------------
       # 1. Checkout
       # -----------------------------------------
@@ -44,13 +47,14 @@ jobs:
         uses: actions/checkout@v4
 
       # -----------------------------------------
-      # 2. Setup Node
+      # 2. Setup Node.js
       # -----------------------------------------
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version-file: "package.json"
           cache: "npm"
+
       # -----------------------------------------
       # 3. Install dependencies
       # -----------------------------------------
@@ -66,7 +70,7 @@ jobs:
       # -----------------------------------------
       # 5. Validate environment configuration
       # -----------------------------------------
-      - name: Validate test environment configuration on Github
+      - name: Validate test environment configuration
         env:
           BASE_URL: ${{ vars.BASE_URL }}
           APP_USERNAME: ${{ secrets.APP_USERNAME }}
@@ -94,7 +98,10 @@ jobs:
           else
             echo "APP_PASSWORD: MISSING"
           fi
-      # this is added for debugging
+
+      # -----------------------------------------
+      # 6. Runtime diagnostics
+      # -----------------------------------------
       - name: Diagnose Playwright environment
         run: |
           echo "======================================"
@@ -105,187 +112,124 @@ jobs:
           echo "SHA: ${{ github.sha }}"
           echo "TEST_ENV: $TEST_ENV"
           echo "CI: $CI"
-          echo "PWDEBUG: ${PWDEBUG:-not-set}"
           node --version
           npm --version
           npx playwright --version
+          npx allure --version
           echo "======================================"
-      # this is added for debugging ends here
 
       # -----------------------------------------
-      # 6. Run Playwright tests
+      # 7. Run Playwright tests
       # -----------------------------------------
       - name: Run Playwright tests
+        id: playwright-tests
         env:
           BASE_URL: ${{ vars.BASE_URL }}
           APP_USERNAME: ${{ secrets.APP_USERNAME }}
           APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
 
-        run: npm test
+        run: |
+          echo "Starting Playwright tests..."
+          echo "TEST_ENV=$TEST_ENV"
+
+          npm run test
 
       # -----------------------------------------
-      # 7. Upload Playwright HTML report
+      # 8. Inspect Allure results
+      # -----------------------------------------
+      - name: Check Allure results
+        if: ${{ !cancelled() }}
+        run: |
+          echo "======================================"
+          echo "Allure Results"
+          echo "======================================"
+
+          if [ -d "allure-results" ]; then
+            echo "✓ allure-results directory exists"
+            echo "Result files: $(find allure-results -type f | wc -l)"
+            ls -lah allure-results
+          else
+            echo "✗ allure-results directory does NOT exist"
+            exit 1
+          fi
+
+      # -----------------------------------------
+      # 9. Generate Allure report
+      # -----------------------------------------
+      - name: Generate Allure report
+        if: ${{ !cancelled() }}
+        run: |
+          echo "======================================"
+          echo "Generating Allure Report"
+          echo "======================================"
+
+          npm run allure:generate
+
+      # -----------------------------------------
+      # 10. Verify Allure report
+      # -----------------------------------------
+      - name: Verify Allure report
+        if: ${{ !cancelled() }}
+        run: |
+          echo "======================================"
+          echo "Verifying Allure Report"
+          echo "======================================"
+
+          if [ -d "allure-report" ]; then
+            echo "✓ allure-report directory exists"
+            echo "Report files: $(find allure-report -type f | wc -l)"
+          else
+            echo "✗ allure-report directory does NOT exist"
+            exit 1
+          fi
+
+      # -----------------------------------------
+      # 11. Upload Playwright HTML report
       # -----------------------------------------
       - name: Upload Playwright HTML Report
-        if: ${{ always() }} # Regardless of whether tests passed or failed or cancelled, upload the report
-
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
-
         with:
           name: playwright-report-${{ env.TEST_ENV }}-${{ github.run_number }}
           path: playwright-report/
           retention-days: 30
           if-no-files-found: warn
-      # -----------------------------------------
-      # 8. Upload test results
-      # -----------------------------------------
-      - name: Upload Test Results
-        if: ${{ always() }}
 
+      # -----------------------------------------
+      # 12. Upload Playwright test results
+      # -----------------------------------------
+      - name: Upload Playwright test results
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
-
         with:
           name: playwright-test-results-${{ env.TEST_ENV }}-${{ github.run_number }}
           path: test-results/
           retention-days: 30
           if-no-files-found: warn
 
-       # Step 5 - Verify Allure Installation
-      - name: Verify Allure Installation
-        run: |
-          echo "Allure CLI version:"
-          npx allure --version
-          echo ""
-          echo "allure-playwright version:"
-          npm list allure-playwright
-
-      # Step 6 - Clean Previous Results
-      - name: Clean Previous Results
-        run: |
-          rm -rf allure-results allure-report
-          mkdir -p allure-results
-          echo "✓ Cleaned and initialized directories"
-
-      # Step 7 - Execute Playwright Tests with Detailed Logging
-      - name: Run Playwright Tests
-        run: |
-          echo "Starting Playwright tests with env.TEST_ENV"
-          npm run test:qa:parallel:headless || true
-          echo "Test run completed (exit code: $?)"
-
-      # Step 8 - Debug: Check Test Results
-      - name: Debug - List Test Artifacts
-        if: always()
-        run: |
-          echo "========== DEBUGGING INFO =========="
-          echo ""
-          echo "--- Current Directory Structure ---"
-          ls -la
-          echo ""
-          echo "--- Allure Results Directory ---"
-          if [ -d "allure-results" ]; then
-            echo "✓ allure-results directory exists"
-            echo "Total files: $(ls allure-results 2>/dev/null | wc -l)"
-            echo "Files:"
-            ls -lh allure-results | head -20
-            echo ""
-            echo "--- Sample Result File ---"
-            if ls allure-results/*.json 1> /dev/null 2>&1; then
-              FILE=$(ls allure-results/*.json | head -1)
-              echo "First JSON file: $FILE"
-              head -c 500 "$FILE"
-              echo ""
-            fi
-          else
-            echo "✗ allure-results directory does NOT exist!"
-          fi
-          echo ""
-          echo "--- Test Results (Playwright) ---"
-          if [ -d "test-results" ]; then
-            ls -la test-results
-          else
-            echo "No test-results directory"
-          fi
-          echo "===== END DEBUG ====="
-
-      # Step 9 - Verify Results Before Generating Report
-      - name: Verify Allure Results Exist
-        if: always()
-        run: |
-          if [ ! -d "allure-results" ]; then
-            echo "ERROR: allure-results directory missing!"
-            exit 1
-          fi
-          
-          RESULT_COUNT=$(ls allure-results/*.json 2>/dev/null | wc -l)
-          if [ "$RESULT_COUNT" -eq 0 ]; then
-            echo "WARNING: allure-results directory is EMPTY!"
-            echo "This means tests did not generate Allure results."
-            echo ""
-            echo "Checking playwright config..."
-            grep -A 5 "reporter:" playwright.config.ts
-          else
-            echo "✓ Found $RESULT_COUNT result files"
-          fi
-
-      # Step 10 - Generate Allure Report
-      - name: Generate Allure Report
-        if: always()
-        run: |
-          echo "===== GENERATING ALLURE REPORT ====="
-          npm run allure:generate
-          EXIT_CODE=$?
-          echo "Generation exit code: $EXIT_CODE"
-          
-          if [ $EXIT_CODE -ne 0 ]; then
-            echo "ERROR: Allure generation failed!"
-            exit 1
-          fi
-          
-          echo "Report generated successfully"
-
-      # Step 11 - Verify Report Structure
-      - name: Verify Report Structure
-        if: always()
-        run: |
-          echo "===== VERIFYING REPORT STRUCTURE ====="
-          if [ -d "allure-report" ]; then
-            echo "✓ allure-report directory exists"
-            echo ""
-            echo "Report contents:"
-            ls -lh allure-report
-            echo ""
-            
-            # Check critical files
-            for FILE in index.html app.js widgets app data; do
-              if [ -e "allure-report/$FILE" ]; then
-                echo "✓ $FILE exists"
-              else
-                echo "✗ MISSING: $FILE"
-              fi
-            done
-          else
-            echo "✗ allure-report directory NOT created - report generation FAILED!"
-            exit 1
-          fi
-
-      # Step 12 - Upload Allure Report
-      - name: Upload Allure Report
-        if: always()
+      # -----------------------------------------
+      # 13. Upload Allure report
+      # -----------------------------------------
+      - name: Upload Allure report
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: allure-report
-          path: allure-report
-          if-no-files-found: error
+          name: allure-report-${{ env.TEST_ENV }}-${{ github.run_number }}
+          path: allure-report/
           retention-days: 30
+          if-no-files-found: error
 
-      # Step 13 - Summary
+      # -----------------------------------------
+      # 14. GitHub Actions summary
+      # -----------------------------------------
       - name: Build Summary
-        if: always()
+        if: ${{ !cancelled() }}
         run: |
-          echo "## Allure Report Generated ✓" >> $GITHUB_STEP_SUMMARY
+          echo "## Allure Report Generated" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Download the artifact from the **Artifacts** section" >> $GITHUB_STEP_SUMMARY
+          echo "Environment: **$TEST_ENV**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Download the Allure report from the **Artifacts** section." >> $GITHUB_STEP_SUMMARY
 
       # # -----------------------------------------
       # # 9. Generate Allure report

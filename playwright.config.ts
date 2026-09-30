@@ -43,7 +43,7 @@ export default defineConfig({
         ['junit', {
             outputFile: 'test-results/junit.xml'
         }],
-        ['allure-playwright', { outputFolder: "allure-results" }]
+        ['allure-playwright', { resultsDir: "allure-results" }]
     ],
 
     projects: [
