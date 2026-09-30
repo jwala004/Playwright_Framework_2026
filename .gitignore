@@ -22,6 +22,7 @@ allure-report/
 test-results
 
 html-reports
+playwright-reports
 
 playwright/.auth/user.json
 

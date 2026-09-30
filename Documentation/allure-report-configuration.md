@@ -134,6 +134,17 @@ npm run allure:serve
 Verify your allure installation:
 npx allure --version
 
+############################## To view Allure report Downloaded from GIthub Actions ######################################
+
+1. 1st download and install java 8 and above version
+2. Set Java home in "System variables"
+3. Download the report from github actions and extract it
+4. Now keep the idea about folder where the report is present
+5. Run the below command;
+npx allure open path_of_report
+Example;
+npx allure open ./allure-report-prod-40
+
 ############################################ For future enhancements ############################################
 
 ### One thing I'd recommend for your framework

@@ -190,8 +190,8 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report-${{ env.TEST_ENV }}-${{ github.run_number }}
-          path: playwright-report/
+          name: html-report-${{ env.TEST_ENV }}-${{ github.run_number }}
+          path: html-report
           retention-days: 30
           if-no-files-found: warn
 
