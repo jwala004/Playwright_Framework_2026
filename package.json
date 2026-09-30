@@ -9,12 +9,17 @@
   },
   "scripts": {
     "clean:allure": "rimraf allure-results allure-report",
+   
     "test:qa": "npm run clean:allure && cross-env TEST_ENV=qa playwright test",
     "test:qa:headed": "npm run clean:allure && cross-env TEST_ENV=qa playwright test --headed",
+    
     "test:uat": "npm run clean:allure && cross-env TEST_ENV=uat playwright test",
     "test:uat:headed": "npm run clean:allure && cross-env TEST_ENV=uat playwright test --headed",
+    
     "test:prod": "npm run clean:allure && cross-env TEST_ENV=prod playwright test",
     "test:prod:headed": "npm run clean:allure && cross-env TEST_ENV=prod playwright test --headed",
+    "test": "playwright test",
+   
     "allure:generate": "npx allure generate allure-results -o allure-report",
     "allure:open": "npx allure open allure-report",
     "allure:serve": "npx allure serve allure-results"
