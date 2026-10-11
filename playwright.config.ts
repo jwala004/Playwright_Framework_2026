@@ -36,6 +36,7 @@ export default defineConfig({
     workers: process.env.CI ? 2 : Number(process.env.WORKERS ?? 3),
     /* Reporter to use. See https://playwright.dev/docs/test-reporters */
     reporter: [
+        ['line'],
         ['html', {
             outputFolder: 'html-reports',
             open: 'never'
@@ -47,30 +48,53 @@ export default defineConfig({
     ],
 
     projects: [
-        // 1. Setup Project: Executes auth.setup.ts first
-        {
-            name: 'setup',
-            testMatch: /.*\.setup\.ts/,
-        },
+        // // 1. Setup Project: Executes auth.setup.ts first
+        // {
+        //     name: 'setup',
+        //     testMatch: /.*\.setup\.ts/,
+        // },
+        // {
+        //     name: 'chromium',
+        //     dependencies: ['setup'], // Ensures setup finishes before running these tests
+        //     use: {
+        //         ...devices['Desktop Chrome'],
+        //         storageState: './playwright/.auth/user.json', // Automatically injects cookies & localStorage
+        //         // headless: true, // not needed, as headless is already set in the global use options
+        //         /* 3. Pass launch arguments for Chromium-based browsers */
+        //     viewport: null,
+        //     launchOptions: {
+        //         args: [
+        //             '--start-maximized',
+        //             '--window-position=0,0',
+        //             '--window-size=1920,1080',
+        //         ],
+        //     },
+        //     }
+        // },
+
         {
             name: 'chromium',
-            dependencies: ['setup'], // Ensures setup finishes before running these tests
             use: {
                 ...devices['Desktop Chrome'],
-                storageState: './playwright/.auth/user.json', // Automatically injects cookies & localStorage
-                // headless: true, // not needed, as headless is already set in the global use options
             }
         },
 
-        {
-            name: 'edge',
-            use: {
-                ...devices['Desktop Edge'],
-                channel: 'msedge',
-                //  headless: true, // not needed, as headless is already set in the global use options
-                //  slowMo: 500
-            }
-        },
+        // {
+        //     name: 'firefox',
+        //     use: {
+        //         ...devices['Desktop Firefox'],
+        //     }
+        // },
+
+        // {
+        //     name: 'edge',
+        //     use: {
+        //         ...devices['Desktop Edge'],
+        //         channel: 'msedge',
+        //         //  headless: true, // not needed, as headless is already set in the global use options
+        //         //  slowMo: 500
+        //     }
+        // },
 
         // {
         //     name: 'Microsoft Edge',

@@ -1,0 +1,7 @@
+To pause execution when a dynamic UI pop-up (tooltip/dropdown) appears:
+Press F12 to open DevTools, go to the Console tab, paste the command below, and press Enter. Then trigger the pop-up 
+within 3 seconds:
+
+JavaScript
+setTimeout(() => { debugger; }, 3000);
+This pauses JavaScript execution so the pop-up stays frozen on the screen indefinitely until you unpause

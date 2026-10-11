@@ -25,7 +25,6 @@ export const test = base.extend<CustomFixtures>({
         await use(new LogoutPage(page));
     }
 
-
 });
 
 export { expect };

@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
 
-const allowedEnvironments = ['qa', 'uat', 'prod'] as const;
+const allowedEnvironments = ['qa', 'uat', 'prod', 'dev'] as const;
 
 /*
 Why as const?
@@ -115,7 +115,7 @@ function getRequiredEnvVariable(name: string): string {
         throw new Error(
             `Missing required environment variable "${name}" ` +
             `for environment "${environment}". ` +
-            `Please provide "${name}" through the local `.env` file ` +
+            `Please provide "${name}" through the local .env file` +
             `or the CI/CD environment configuration.`
         );
     }
