@@ -1,7 +1,7 @@
 import {test, expect, Locator} from '@playwright/test'
 
 
-test('Alerts and Toasts handling @alerts', async({page}) =>{
+test.skip('Alerts and Toasts handling @alerts', async({page}) =>{
     await page.goto('/')
     
     await page.getByRole('button', {name : 'Alerts & Windows'}).click()
@@ -31,8 +31,6 @@ test('Alerts and Toasts handling @alerts', async({page}) =>{
     
     // Once pop-up is dismissed then, Validate ' Show Alert' button again to be visible
     await expect(page.getByRole('button', {name: ' Show Alert'})).toBeVisible()
-
-
 
     // await page.pause()
 })

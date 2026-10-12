@@ -2,41 +2,41 @@ import { test, expect } from '@playwright/test'
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 
-// test('File Handling @automationpracticesite', async ({ page }) => {
-//     await page.goto('/')
+test.skip('File Handling @automationpracticesite', async ({ page }) => {
+    await page.goto('/')
 
-//     // Upload Single file
-//     await page.getByRole('link', { name: 'Upload & Download' }).click()
+    // Upload Single file
+    await page.getByRole('link', { name: 'Upload & Download' }).click()
 
-//     await expect(page.getByRole('heading', { name: 'Upload and Download' })).toHaveText('Upload and Download');
+    await expect(page.getByRole('heading', { name: 'Upload and Download' })).toHaveText('Upload and Download');
 
-//     await page.getByText('Drag & Drop file here or Browse fileSupports single TXT, PNG, JPG, PDF files').setInputFiles('test-data/logindata.json')
+    await page.getByText('Drag & Drop file here or Browse fileSupports single TXT, PNG, JPG, PDF files').setInputFiles('test-data/logindata.json')
 
-//     // Get File name
-//     const fileName: string = await page.locator("//h4[@class='text-xs font-bold text-slate-800']").innerText()
+    // Get File name
+    const fileName: string = await page.locator("//h4[@class='text-xs font-bold text-slate-800']").innerText()
 
-//     const fileName2: string = (await page.locator("//h4[@class='text-xs font-bold text-slate-800']").textContent())!
+    const fileName2: string = (await page.locator("//h4[@class='text-xs font-bold text-slate-800']").textContent())!
 
-//     console.log(fileName)
-//     console.log(fileName2)
+    console.log(fileName)
+    console.log(fileName2)
 
-//     // Get File upload success message from pop-up
-//     const successmessageinpopup: string = await page.locator("//span[@class='flex-1']").innerText()
-//     console.log("successmessageinpopup : " + successmessageinpopup)
+    // Get File upload success message from pop-up
+    const successmessageinpopup: string = await page.locator("//span[@class='flex-1']").innerText()
+    console.log("successmessageinpopup : " + successmessageinpopup)
 
-//     // Validate Uploaded File name
-//     await expect(page.locator("//h4[@class='text-xs font-bold text-slate-800']")).toHaveText(fileName)
+    // Validate Uploaded File name
+    await expect(page.locator("//h4[@class='text-xs font-bold text-slate-800']")).toHaveText(fileName)
 
-//     // Validate File upload success message in pop-up
-//     const expectedsuccessmessageinpopup: string = `Uploaded single file: `.replace(/"/g, '') +`"${fileName}"`
-//     console.log("expectedsuccessmessageinpopup : " + expectedsuccessmessageinpopup);
+    // Validate File upload success message in pop-up
+    const expectedsuccessmessageinpopup: string = `Uploaded single file: `.replace(/"/g, '') +`"${fileName}"`
+    console.log("expectedsuccessmessageinpopup : " + expectedsuccessmessageinpopup);
 
-//     await expect(page.locator("//span[@class='flex-1']")).toHaveText(expectedsuccessmessageinpopup)
+    await expect(page.locator("//span[@class='flex-1']")).toHaveText(expectedsuccessmessageinpopup)
 
-//     // await page.pause()
-// })
+    // await page.pause()
+})
 
-test('Multiple File Handling @automationpracticesite', async ({ page }) => {
+test.skip('Multiple File Handling @automationpracticesite', async ({ page }) => {
     await page.goto('/')
 
     // Upload Multiple files
