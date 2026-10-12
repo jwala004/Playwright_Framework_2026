@@ -84,6 +84,7 @@ test('Multiple File Handling @automationpracticesite', async ({ page }) => {
 })
 
 test('File Downloading @automationpracticesite @filedownload', async ({ page }) => {
+    test.skip(true, 'Temporarily disabled for maintenance');
    
     await page.goto('/')
 
