@@ -6,7 +6,7 @@ test.use({ storageState: { cookies: [], origins: [] } })
 
 interface LoginTestData {
     username: string;
-    password: string;
+    password: string | number;
 }
 
 // test('Read test data from Excel', async ({page, loginPage}) => {
@@ -38,7 +38,7 @@ test(`Validate login from Excel ${userslogindata.username}`, async ({page, login
     expect(logindata[0].username).toBeTruthy();
 
     // login into the application
-    await loginPage.login(userslogindata.username, userslogindata.password)
+    await loginPage.login(userslogindata.username, String(userslogindata.password))
     console.log(`Logging in with user: ${userslogindata.username}`)
 
     // Validate successfull login

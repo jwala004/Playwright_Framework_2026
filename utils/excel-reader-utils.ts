@@ -1,6 +1,5 @@
 
 import * as XLSX from 'xlsx';
-import * as path from 'node:path';
 
 export function readExcelData<T>(filePath_with_fileName: string, sheetName: string): T[] {
     // Read the Excel workbook
