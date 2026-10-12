@@ -1,7 +1,9 @@
 import {test, expect, Locator} from '@playwright/test'
 
 
-test.skip('Alerts and Toasts handling @alerts', async({page}) =>{
+test('Alerts and Toasts handling @alerts', async({page}) =>{
+    test.skip(true, 'Temporarily disabled for maintenance');
+
     await page.goto('/')
     
     await page.getByRole('button', {name : 'Alerts & Windows'}).click()

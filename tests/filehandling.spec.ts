@@ -2,7 +2,9 @@ import { test, expect } from '@playwright/test'
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 
-test.skip('File Handling @automationpracticesite', async ({ page }) => {
+test('File Handling @automationpracticesite', async ({ page }) => {
+    test.skip(true, 'Temporarily disabled for maintenance');
+
     await page.goto('/')
 
     // Upload Single file
@@ -36,7 +38,9 @@ test.skip('File Handling @automationpracticesite', async ({ page }) => {
     // await page.pause()
 })
 
-test.skip('Multiple File Handling @automationpracticesite', async ({ page }) => {
+test('Multiple File Handling @automationpracticesite', async ({ page }) => {
+    test.skip(true, 'Temporarily disabled for maintenance');
+    
     await page.goto('/')
 
     // Upload Multiple files

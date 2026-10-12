@@ -28,7 +28,10 @@ test('Login - Logout : All in a single test-case', async ({ page, landingPage, l
 
     // verify login
     await loginPage.login(config.username, config.password)
-    await expect(page.locator('span.bg-gradient-to-br', { hasText: 'J' })).toBeVisible()
+    // await expect(page.locator('span.bg-gradient-to-br', { hasText: 'J' })).toBeVisible()
+    // Validate successfull login
+    await expect(page.getByText('Login successful')).toBeVisible()
+    await expect(page.getByText('Login successful')).toHaveText('Login successful')
 
     // logout from the application
     await logoutPage.logout()
@@ -42,5 +45,6 @@ test('Verify Login failed with invalid credentials', async ({ page, loginPage, l
 
     // Try login with invalid credentials
     await logoutPage.isinvalidErrorMessageDisplayed()
-    await logoutPage.expectErrorMessageToHaveText('Invalid Email or Password')
+    // await logoutPage.expectErrorMessageToHaveText('Invalid Email or Password')
+    await logoutPage.expectErrorMessageToHaveText('Invalid Email, Phone or Password')
 })

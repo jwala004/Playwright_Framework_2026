@@ -9,9 +9,10 @@ export class LogoutPage extends BasePage {
 
     constructor(page: Page) {
         super(page);
-        this.userProfileIcon = page.locator("button[id='radix-:r0:']")
+        this.userProfileIcon = page.locator('button[aria-haspopup="menu"]')
         this.logoutLink = page.getByRole('menuitem', { name: 'Log out' })
-        this.invalidErrorMessage = page.getByText('Invalid Email or Password')
+        // this.invalidErrorMessage = page.getByText('Invalid Email or Password')
+        this.invalidErrorMessage = page.getByText('Invalid Email, Phone or Password')
     }
 
     async logout() {

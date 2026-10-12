@@ -21,6 +21,8 @@ $env:TEST_ENV="uat"; npx playwright test tests/loginreaddatafromjson.spec.ts --h
 
 $env:TEST_ENV="uat"; npx playwright test tests/logout.spec.ts --headed --project=edge
 
+$env:TEST_ENV="uat"; npx playwright test tests/logout.spec.ts --headed --project=chromium
+
 $env:TEST_ENV="other"; npx playwright test tests/filehandling.spec.ts --headed --project=chromium
 
 $env:TEST_ENV="uat"; npx playwright test tests/loginreaddatafromexcel.spec.ts --headed --project=chromium
