@@ -15,9 +15,9 @@ This is an important command.
 # So: DEV + Chromium only.
 
 4. Running a single test-case file from powershell;
-$env:TEST_ENV="uat"; npx playwright test tests/loginreaddatafromjson.spec.ts --headed --project=chromium
+$env:TEST_ENV="uat"; npx playwright test tests/login-json.spec.spec.ts --headed --project=chromium
 
-$env:TEST_ENV="uat"; npx playwright test tests/loginreaddatafromjson.spec.ts --headed --project=edge
+$env:TEST_ENV="uat"; npx playwright test tests/login-json.spec.spec.ts --headed --project=edge
 
 $env:TEST_ENV="uat"; npx playwright test tests/logout.spec.ts --headed --project=edge
 
@@ -25,7 +25,9 @@ $env:TEST_ENV="uat"; npx playwright test tests/logout.spec.ts --headed --project
 
 $env:TEST_ENV="other"; npx playwright test tests/filehandling.spec.ts --headed --project=chromium
 
-$env:TEST_ENV="uat"; npx playwright test tests/loginreaddatafromexcel.spec.ts --headed --project=chromium
+$env:TEST_ENV="uat"; npx playwright test tests/login-excel.spec.spec.ts --headed --project=chromium
+
+$env:TEST_ENV="uat"; npx playwright test tests/login-csv.spec.ts --headed --project=chromium
 
 
 5. 

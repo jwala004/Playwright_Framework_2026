@@ -1,25 +1,24 @@
 import {test, expect } from '../fixtures/testFixture'
 // import * as XLSX from '../test-data/login-data.xlsx'
-import { readExcelData } from '../utils/excel-reader-utils'
+import { readExcelData } from '../utils/excel-reader'
 
 test.use({ storageState: { cookies: [], origins: [] } })
 
 interface LoginTestData {
     username: string;
-    password: string | number;
+    password: string;
 }
 
-// test('Read test data from Excel', async ({page, loginPage}) => {
-//     await page.goto('/')
-//     const data = readExcelData<LoginTestData>('test-data/login-data.xlsx','LoginData');
+test('Read test data from Excel', async ({page, loginPage}) => {
+    await page.goto('/')
+    const data = readExcelData<LoginTestData>('test-data/login-data.xlsx','LoginData');
 
-//     console.log(data);
+    console.log(data);
 
-//     expect(data.length).toBeGreaterThan(0);
-//     expect(data[0].username).toBeTruthy();
+    expect(data.length).toBeGreaterThan(0);
+    expect(data[0].username).toBeTruthy();
 
-// });
-
+});
 
 const logindata = readExcelData<LoginTestData>('test-data/login-data.xlsx','LoginData');
 
