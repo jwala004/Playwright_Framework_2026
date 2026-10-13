@@ -12,7 +12,7 @@ const loginTestDataFromExcel = TestDataFactory.load('login-data.xlsx', loginData
 // Generate one independent Playwright test per record.
 for (const usersloginTestDataFromJson of loginTestDataFromJson) {
     
-    test(`Login test : usersloginTestDataFromJson - ${usersloginTestDataFromJson.username}`, async ({page, loginPage, landingPage,}) => {
+    test(`Login test : usersloginTestDataFromJson - ${usersloginTestDataFromJson.username}`, async ({page, loginPage, landingPage}) => {
     
     await page.goto('/');
 

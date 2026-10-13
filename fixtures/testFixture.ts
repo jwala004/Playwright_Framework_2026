@@ -4,15 +4,10 @@ import { LoginPage } from '../pages/LoginPage';
 import { LandingPage } from '../pages/LandingPage';
 import {LogoutPage} from '../pages/LogoutPage'
 
-import { TestDataFactory } from '../data/factories/TestDataFactory';
-
-
 type CustomFixtures = {
     loginPage: LoginPage;
     landingPage: LandingPage;
     logoutPage: LogoutPage;
-
-    testData: typeof TestDataFactory;
 };
 
 export const test = base.extend<CustomFixtures>({
@@ -27,10 +22,6 @@ export const test = base.extend<CustomFixtures>({
 
     logoutPage: async ({page}, use) =>{
         await use(new LogoutPage(page));
-    },
-    
-    testData: async ({}, use) => {
-        await use(TestDataFactory);
     },
 
 });

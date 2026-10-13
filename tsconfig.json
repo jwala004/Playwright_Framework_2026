@@ -16,7 +16,8 @@
     "fixtures/**/*.ts",
     "utils/**/*.ts",
     "playwright.config.ts",
-    "env.config.ts"
+    "env.config.ts",
+    "constants/**/*.ts",
     
   ]
 }
