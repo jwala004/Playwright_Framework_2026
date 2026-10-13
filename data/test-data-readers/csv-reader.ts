@@ -1,10 +1,7 @@
-
 import { parse } from 'csv-parse/sync';
 import * as fs from 'node:fs';
-import * as path from 'node:path';
 
 export function readCsvData<T>(fileName_with_filePath: string): T[] {
-    // const filePath = path.resolve(process.cwd(), fileName);
     if (!fs.existsSync(fileName_with_filePath)) {
         throw new Error(`CSV file not found: ${fileName_with_filePath}`);
     }

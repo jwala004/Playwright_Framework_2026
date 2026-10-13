@@ -1,11 +1,11 @@
-
 import XLSX from 'xlsx';
+// import * as XLSX from '../test-data/login-data.xlsx'
 import * as fs from 'node:fs';
 
 export function readExcelData<T>(fileName_with_filePath: string, sheetName?: string): T[] {
     // Check if file exists
         if (!fs.existsSync(fileName_with_filePath)) {
-            throw new Error(`CSV file not found: ${fileName_with_filePath}`);
+            throw new Error(`Excel file not found: ${fileName_with_filePath}`);
         }
     // Read the Excel workbook
     const workbook = XLSX.readFile(fileName_with_filePath);
@@ -20,7 +20,8 @@ export function readExcelData<T>(fileName_with_filePath: string, sheetName?: str
     }
 
     // Convert worksheet rows into objects
-    const data = XLSX.utils.sheet_to_json<T>(worksheet);
+    const data = XLSX.utils.sheet_to_json<T>(worksheet, {defval: '', raw: false});
+    // const data = XLSX.utils.sheet_to_json<T>(worksheet);
     
     if (data.length === 0) {
         throw new Error(`No test data found in "${sheetName}"`);

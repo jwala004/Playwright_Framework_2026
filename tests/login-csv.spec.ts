@@ -1,6 +1,6 @@
 
 import { test, expect } from '../fixtures/testFixture'
-import { readCsvData } from '../utils/csv-reader'
+import { readCsvData } from '../data/test-data-readers/csv-reader'
 
 test.use({ storageState: { cookies: [], origins: [] } })
 

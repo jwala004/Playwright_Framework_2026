@@ -36,6 +36,7 @@
   "dependencies": {
     "csv-parse": "^7.0.3",
     "dotenv": "^17.4.2",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "zod": "^4.6.7"
   }
 }

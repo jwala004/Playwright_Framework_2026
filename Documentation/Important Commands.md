@@ -29,6 +29,13 @@ $env:TEST_ENV="uat"; npx playwright test tests/login-excel.spec.spec.ts --headed
 
 $env:TEST_ENV="uat"; npx playwright test tests/login-csv.spec.ts --headed --project=chromium
 
+$env:TEST_ENV="uat"; npx playwright test tests/login-json2.spec.ts --headed --project=chromium
+
+$env:TEST_ENV="uat"; npx playwright test tests/login-testdata-factory.spec.ts --headed --project=chromium
+
+
+
+
 
 5. 
 
