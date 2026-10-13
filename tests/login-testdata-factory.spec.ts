@@ -5,14 +5,14 @@ import { loginDataSchema } from '../data/contracts/login-data.schema';
 test.use({ storageState: { cookies: [], origins: [] } })
 
 // Load and validate data during test collection.
-const loginTestDataFromJson = TestDataFactory.load('login-data.json', loginDataSchema);
-const loginTestDataFromCsv = TestDataFactory.load('login-data.csv', loginDataSchema);
-const loginTestDataFromExcel = TestDataFactory.load('login-data.xlsx', loginDataSchema, { sheetName: 'LoginData'});
+const loginTestDataFromJson = TestDataFactory.load('data/test-data/login-data.json', loginDataSchema);
+const loginTestDataFromCsv = TestDataFactory.load('data/test-data/login-data.csv', loginDataSchema);
+const loginTestDataFromExcel = TestDataFactory.load('data/test-data/login-data.xlsx', loginDataSchema, { sheetName: 'LoginData'});
 
 // Generate one independent Playwright test per record.
 for (const usersloginTestDataFromJson of loginTestDataFromJson) {
     
-    test(`Login test : usersloginTestDataFromJson - ${usersloginTestDataFromJson.username}`, async ({page, loginPage, landingPage}) => {
+    test(`Login test : usersloginTestDataFromJson - ${usersloginTestDataFromJson.username} tag: ['@API', '@UAT']` , async ({page, loginPage, landingPage}) => {
     
     await page.goto('/');
 

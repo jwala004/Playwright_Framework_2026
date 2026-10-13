@@ -8,7 +8,7 @@ interface LoginTestData {
     password: string;
 }
 
-const logindata = readExcelData<LoginTestData>('test-data/login-data.xlsx','LoginData');
+const logindata = readExcelData<LoginTestData>('data/test-data/login-data.xlsx','LoginData');
 
 for (const userslogindata of logindata) {
 
@@ -37,7 +37,7 @@ test(`Validate login from Excel ${userslogindata.username}`, async ({page, login
 
 test('Read test data from Excel', async ({page, loginPage}) => {
     await page.goto('/')
-    const data = readExcelData<LoginTestData>('test-data/login-data.xlsx','LoginData');
+    const data = readExcelData<LoginTestData>('data/test-data/login-data.xlsx','LoginData');
 
     console.log(data);
 

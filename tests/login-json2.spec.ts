@@ -9,7 +9,7 @@ interface User {
     password: string;
 }
 
-const users = readJson<User[]>('test-data/login-data.json');
+const users = readJson<User[]>('data/test-data/login-data.json');
 
 for (const user of users) {
 

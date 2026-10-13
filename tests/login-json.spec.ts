@@ -1,5 +1,5 @@
 import {test, expect } from '../fixtures/testFixture'
-import users from '../test-data/logindata.json'
+import users from '../data/test-data/login-data.json'
 
 test.use({ storageState: { cookies: [], origins: [] } });
 

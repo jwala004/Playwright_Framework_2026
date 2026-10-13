@@ -9,7 +9,7 @@ interface LoginTestData {
     password: string;
 }
 
-const logindata = readCsvData<LoginTestData>('test-data/login-data.csv');
+const logindata = readCsvData<LoginTestData>('data/test-data/login-data.csv');
 
 for (const userslogindata of logindata) {
 
