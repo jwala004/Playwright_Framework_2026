@@ -35,7 +35,7 @@ test(`Validate login from Excel ${userslogindata.username}`, async ({page, login
 
 }
 
-test('Read test data from Excel', async ({page, loginPage}) => {
+test('Read test data from Excel', async ({page}) => {
     await page.goto('/')
     const data = readExcelData<LoginTestData>('data/test-data/login-data.xlsx','LoginData');
 

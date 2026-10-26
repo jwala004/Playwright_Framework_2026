@@ -6,4 +6,7 @@
 // M-2
 // charAt()=> console.log(finalString.charAt(finalString.length - 1))
 
+// Find the value based on index from array
+// console.log(newarr[newarr.length - 2])
+
 

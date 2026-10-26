@@ -438,3 +438,36 @@ interfaces
 type aliases
 classes
 Advanced TypeScript concepts are usually unnecessary.
+
+=================================================================================================================================
+Loop	            What it returns
+for...of	        Element value
+for...in	        Property key / array index
+Traditional for	    Numeric index you control
+
+1. for...of example;
+for (const char of arr121) {
+    if (char === ' ') {
+        console.log('Space found');
+    }
+}
+
+2. for...in example;
+for (const i in arr121) {
+    if (arr121[i] === ' ') {
+        console.log('Space found at index:', i);
+    }
+}
+
+3. Traditional for loop — access indexes
+for (let i = 0; i < arr121.length; i++) {
+    if (arr121[i] === ' ') {
+        console.log('Space found at index:', i);
+    }
+}
+
+
+
+
+
+
