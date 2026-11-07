@@ -9,20 +9,25 @@ This approach helps identify defects early, reduces dependency on development co
 
 2. How would you test when different components are not ready?
 Application status	            Testing approach	                                                        Example
+---------------------------------------------------------------------------------------------------------------------------------
 UI is not ready	                Review requirements, design test cases, prepare automation framework Prepare login test scenarios
+---------------------------------------------------------------------------------------------------------------------------------
 UI is ready, backend is 
 not ready	                    Mock API responses	                               Simulate successful and failed login responses
+---------------------------------------------------------------------------------------------------------------------------------
 Backend API is ready, UI is 
 not ready	                    Test APIs independently	                        Validate status codes, schema, and business rules
+---------------------------------------------------------------------------------------------------------------------------------
 UI and backend are 
 independently ready	            Component and integration testing	                Verify frontend sends the correct payload
+---------------------------------------------------------------------------------------------------------------------------------
 Entire application is ready	    End-to-end and regression testing	                Login → dashboard → logout
+---------------------------------------------------------------------------------------------------------------------------------
 
 # 2. How would you resolve conflicts in your team?
 
 
 # 3. What is the most challenging thing you faced while designing automation framework?
-
 **Answer:**
 
 The most challenging part was not simply writing automation scripts, but designing a framework that was maintainable, reusable, environment-independent, and secure enough for both local development and CI/CD execution.
@@ -73,7 +78,7 @@ This approach improved maintainability and reduced environment-related failures.
 # Practical examples in your Playwright + TypeScript framework
 Failure condition	                        Fail-fast behavior
 Missing BASE_URL	                        Stop during configuration initialization
-Unsupported environment such as staging2	Reject the environment before running tests
+Unsupported environment such as staging 	Reject the environment before running tests
 Missing username or password	            Report which required variable is missing without printing its value
 Invalid JSON/CSV/Excel test data	        Fail schema validation before executing test steps
 Missing required test-data file	            Throw a clear file-path error during data loading
@@ -109,7 +114,7 @@ I use JavaScriptExecutor when Selenium's standard WebDriver APIs are insufficien
 
 Common scenarios where I use JavaScriptExecutor:
 Scenario 1: Scroll the page
-Scenario 2: Click an element using JavaScript
+Scenario 2: Click on an element using JavaScript
 
 # 7 What should be the ideal way to store data using selenium web driver only?
 I will prefer to use it in a normal java file, and retrieve it using array, list or map based on the type of data.
@@ -347,7 +352,9 @@ Stage the resolved files, complete the merge or rebase, and run relevant tests.
 
 # 44. What are common Estimation techniques in Agile?
 
+
 # 45. What metrics do you track to measure project progress in Agile?
+
 
 # 46. What is a test pyramid concept?
 
@@ -443,13 +450,11 @@ Employee employee = new Employee("Jwala", 30);
 ObjectMapper mapper = new ObjectMapper();
 String requestBody = mapper.writeValueAsString(employee);
 
-RestAssured.given()
-    .contentType(ContentType.JSON)
-    .body(requestBody)
+RestAssured.given().contentType(ContentType.JSON).body(requestBody)
 .when()
-    .post("/employees")
+.post("/employees")
 .then()
-    .statusCode(201);
+.statusCode(201);
 
 
 This explicitly uses Jackson to serialize the object before sending it.
@@ -457,9 +462,7 @@ B. Let REST Assured serialize the object automatically
 You often don't need to instantiate ObjectMapper yourself:
 Employee employee = new Employee("Jwala", 30);
 
-given()
-    .contentType(ContentType.JSON)
-    .body(employee)
+given().contentType(ContentType.JSON).body(employee)
 .when()
     .post("/employees")
 .then()
@@ -469,21 +472,163 @@ given()
 When a compatible Jackson serializer is available and configured, REST Assured can serialize the Java object automatically.
 
 Interview distinction: REST Assured handles the HTTP request and response; Jackson provides JSON-to-object and object-to-JSON conversion.
-5. Why is ObjectMapper useful in API automation?
+
+# Serialization/Deserialization:
+1. Serialization
+Serialization is the process of converting a Java object into a JSON.
+In simple words:
+Java Object → JSON
+
+2. Deserialization
+Deserialization is the process of converting JSON data received from an API into a Java object.
+
+In simple words:
+JSON → Java Object
+
+Interview-ready answer:
+Serialization is the process of converting a Java object into JSON format, generally when sending request payloads to an API. Deserialization is the reverse process, where JSON 
+received from an API is converted into a Java object. In REST Assured, we can use POJOs with the body() method for serialization and response.as(Employee.class) for deserialization. 
+Jackson's ObjectMapper can perform both conversions.
+
+My recommendation: Remember this simple rule for interviews:
+- POST/PUT: Java POJO → JSON = Serialization.
+- GET response: JSON → Java POJO = Deserialization
+
+# => a follow-up question comes, after Serialization  and Deserialization, What is ObjectMapper?
+
+# What is ObjectMapper?
 - Avoids manually building JSON strings.
 - Makes request payloads easier to maintain using POJOs.
 - Converts API responses into Java objects for assertions.
 - Supports nested objects and collections.
 - Supports configuration for property naming, unknown fields, date formats, and custom serializers/deserializers.
 For example, you can deserialize an API response and then assert against typed fields instead of repeatedly extracting individual JSON values.
-6. Interview-ready answer
-ObjectMapper is a class from the Jackson Databind library used to serialize Java objects into JSON and deserialize JSON into Java objects. In REST Assured, I can use it to convert a POJO into a JSON request body using writeValueAsString() and convert a JSON response into a POJO using readValue(). REST Assured can also perform these conversions automatically when a compatible Jackson integration is available. Using POJOs and ObjectMapper improves type safety, readability, and maintainability compared with manually constructing JSON strings.
+
+Interview-ready answer
+ObjectMapper is a class from the Jackson Databind library used to serialize Java objects into JSON and deserialize JSON into Java objects. 
+Using POJOs and ObjectMapper improves type safety, readability, and maintainability compared with manually constructing JSON strings.
 
 Remember these two methods:
-Method	Conversion
-writeValueAsString(object)	Java object → JSON string
-readValue(json, Employee.class)	JSON string → Java object
+- writeValueAsString(object)	Java object → JSON string
+- readValue(json, Employee.class)	JSON string → Java object
 
+Example:
+Serialization:
+ObjectMapper mapper = new ObjectMapper();
+String json = mapper.writeValueAsString(employee);
+
+Deserialization:
+Employee employee = mapper.readValue(json, Employee.class);
+
+# What is API mocking?
+API mocking means creating a simulated API that behaves like a real API without depending on the actual backend service.
+WireMock intercepts requests sent to its mock server and returns predefined responses.
+Step 1 — Create a WireMock server and define a mock API
+
+When would you use API mocking in a real project?
+Consider this scenario:
+
+You are testing an Order Management application.
+
+When a user places an order, your application calls three external services:
+1. Payment Service
+2. Inventory Service
+3. Notification Service
+However, the Payment Service is not ready yet.
+
+Instead of blocking your testing activities, you can mock the Payment API using WireMock.
+
+For example:
+- Return 200 when payment succeeds.
+- Return 400 when payment details are invalid.
+- Return 500 when the payment service encounters an internal error.
+- Simulate a timeout to test how your application handles slow responses.
+This allows you to test your application's behavior without depending on the actual Payment Service.
+
+
+# 13. How do you ensure test coverage?
+• I use techniques such as requirement traceability matrices, code coverage
+tools, and regular reviews of test cases to ensure all functionalities are
+adequately tested.
+
+# 22. How do you handle a situation where requirements are unclear?
+• I seek clarification from stakeholders, conduct discussions, and collaborate
+with the team to gather necessary information before proceeding with testing.
+
+# How do you handle dynamic elements in Selenium using Java?
+I use techniques like XPath with indexes, regular expressions, and custom
+locators to handle dynamic elements. I also leverage the WebDriverWait class
+with ExpectedConditions to wait for elements to appear.
+
+
+# today i was asked an interview question, it was something like on a page some random security questions are getting loaded, each time differently, and for each each question there are some values in the dropdown. how would you automate it? (DXC)
+
+# How would you handle a bug found on production env? prepare an excellent point-wise answer. the scenario is bug is already found. and it may be reported by the customer or let's it has been observed by a senior manager.
+- Handling a production bug:
+I would follow these steps:
+
+1. Understand the reported issue
+- First, I would carefully understand the issue reported by the customer or senior manager.
+- Gather details such as the affected functionality, user, occurrence time, error message, screenshots, and business scenario.
+- Clarify the expected and actual behaviour.
+
+2. Assess severity and business impact
+- Identify whether the issue impacts a critical business workflow.
+- Check whether it involves financial transactions, data loss, security, or business operations.
+- Assess severity and priority based on the impact and urgency.
+- If it is a critical issue, treat it as a production incident and escalate immediately.
+
+3. Acknowledge and communicate
+- Acknowledge the reported issue and communicate that it is being investigated.
+- Avoid committing to a resolution timeline before understanding the issue.
+
+4. Reproduce the issue
+- Try to reproduce the reported behaviour in production only through safe, controlled steps.
+- Validate the bug on other envs
+- Use the affected user's scenario, test data, browser, and relevant conditions where possible.
+- If reproduction in production is risky, use staging or a production-like environment.
+- Check whether the issue is consistent, intermittent, or user-specific.
+
+5. Investigate and identify the root cause
+- Collaborate with developers, DevOps, and other relevant teams.
+- Analyse application logs, API request/response details, database records, and monitoring dashboards, depending on the issue.
+- Check recent code deployments, configuration changes, database changes, and third-party integrations.
+- Identify whether the issue is related to application code, environment, configuration, infrastructure, or external dependencies.
+
+6. Coordinate immediate mitigation
+- Once the impact is understood, work with the development and operations teams to minimize customer impact.
+- Depending on the situation, possible approaches include:
+  - Rolling back the recent deployment.
+  - Disabling the affected functionality through a feature flag.
+  - Providing a temporary workaround.
+  - Deploying an emergency hotfix.
+- The mitigation decision should be taken collaboratively by the responsible teams.
+
+7. Validate the fix
+- Once developers provide the fix, validate it in staging or a suitable pre-production environment.
+- Verify the original reported scenario.
+- Perform targeted regression testing around the affected functionality.
+
+8. Close the loop with stakeholders
+- Confirm that the issue has been resolved.
+- Share the validation results with the relevant stakeholders.
+
+9. Perform Root Cause Analysis (RCA) and preventive actions
+- Understand why the defect escaped earlier testing.
+- Identify gaps in requirements, test scenarios, automation coverage, integration testing, or deployment validation.
+
+
+Important points interviewers expect you to understand:
+Term	                    Meaning
+Severity	                How badly the defect impacts the system.
+Priority	                How urgently the defect needs to be fixed.
+Hotfix	                    An urgent code change to address a production issue.
+Rollback	                Reverting to a previously stable application version.
+RCA	                        Root Cause Analysis – identifying why the issue occurred.
+Production smoke testing	Verifying critical functionality after deployment.
+Regression testing	        Ensuring the fix hasn't broken existing functionality.
+
+One additional tip: As a Senior SDET, emphasize that you take ownership beyond defect identification. You help with investigation, mitigation, fix validation, automation coverage, and preventive improvements. That's what differentiates a senior QA engineer from someone who simply reports bugs.
 
 
 

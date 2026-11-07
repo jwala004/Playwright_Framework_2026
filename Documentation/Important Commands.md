@@ -33,6 +33,9 @@ $env:TEST_ENV="uat"; npx playwright test tests/login-json2.spec.ts --headed --pr
 
 $env:TEST_ENV="uat"; npx playwright test tests/login-testdata-factory.spec.ts --headed --project=chromium
 
+$env:TEST_ENV="uat"; npx playwright test tests/frame-handling.spec.ts --headed --project=chromium
+
+
 
 
 

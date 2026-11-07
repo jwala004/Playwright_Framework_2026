@@ -2,7 +2,7 @@
 const str : string = 'playwright is awesome'
 const splittedArray = str.split(' ')
 
-const reverseStringMaintainingItsPosition = () =>{
+const reverseStringMaintainingItsPosition = () => {
 
 let finalString : string = ''
 

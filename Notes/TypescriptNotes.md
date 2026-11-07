@@ -76,6 +76,7 @@ console.log(users[1]); // 10
 
 # 🔹 Tuples
 => We can also store multiple values of different types in an array, which is called a tuple in TypeScript.
+
 Example: 
 let users: string[] = ["Ram", 35, "Shayam", 32, "Mohan", 30]
 console.log(users[1]); // 35
@@ -83,12 +84,7 @@ console.log(users[1]); // 35
 # 🔹 Objects with Types
 Objects group related data together with defined structure and types.
 Example: 
-let userDetails:{
-                  username: string,
-                  password: string,
-                  age: number
-                } 
-                = {
+let userDetails : {username: string, password: string, age: number} = {
                   username: 'jk004',
                   passwprd: 'pass123',
                   age: 20
@@ -166,6 +162,7 @@ Hello
 🔹 Optional Parameters
 Optional parameters allow functions to accept values that may or may not be provided.
 This adds flexibility to function calls.
+
 Example:
 function greet(name?: string){ // question mark is used to mark parameters as optional
     console.log(`Hello ${name}`)
@@ -247,8 +244,8 @@ for(const user of users){
 console.log(user);
 }
 
-# Async & Await
-Async and await handle tasks that take time to complete.
+# async & await
+async and await handle tasks that take time to complete.
 TypeScript behavior is identical to JavaScript, with added return type clarity.
 Example:
 async function loadData(): Promise<void> {
@@ -258,6 +255,7 @@ async function loadData(): Promise<void> {
 # Interface
 Interfaces define the structure of objects.
 They make test data clean, reusable, and easy to maintain.
+
 Example:
 interface User {
     username: string;
@@ -331,7 +329,9 @@ Objects are created from classes.
 They allow access to class properties and methods.
 Methods are executed using the dot operator.
 TypeScript ensures type safety while accessing them.
+
 Example:
+
 class LoginPage{
  num1: number = 20; // variable declaration
  login() : void{ // method declaration
@@ -349,7 +349,9 @@ Login called
 The constructor runs automatically when an object is created.
 It initializes values and prepares the class for use.
 Constructor parameters can also have types.
+
 Example:
+
 class LoginPage{
 nameValue: string // variable declaration
 company: string // variable declaration
@@ -360,9 +362,9 @@ constructor(nameValue: string){
     this.company = "YouTube"
 }
 
- login() : void{ // method declaration
+login() : void{ // method declaration
     console.log("Login called")
- }   
+}   
 
 }
 

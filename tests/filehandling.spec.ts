@@ -3,6 +3,7 @@ import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 
 test('File Handling @automationpracticesite', async ({ page }) => {
+   
     test.skip(true, 'Temporarily disabled for maintenance');
 
     await page.goto('/')
@@ -10,7 +11,7 @@ test('File Handling @automationpracticesite', async ({ page }) => {
     // Upload Single file
     await page.getByRole('link', { name: 'Upload & Download' }).click()
 
-    await expect(page.getByRole('heading', { name: 'Upload and Download' })).toHaveText('Upload and Download');
+    await expect(page.getByRole('heading', { name: 'Upload and Download' })).toHaveText('Upload and Download')
 
     await page.getByText('Drag & Drop file here or Browse fileSupports single TXT, PNG, JPG, PDF files').setInputFiles('test-data/logindata.json')
 
@@ -39,6 +40,7 @@ test('File Handling @automationpracticesite', async ({ page }) => {
 })
 
 test('Multiple File Handling @automationpracticesite', async ({ page }) => {
+   
     test.skip(true, 'Temporarily disabled for maintenance');
     
     await page.goto('/')
@@ -53,10 +55,11 @@ test('Multiple File Handling @automationpracticesite', async ({ page }) => {
         'Notes/GitHub_Actions_Playwright_Final_Updated.md',
         'Notes/MCP.md',
         'Notes/TypescriptNotes_InDepth.md',
-        'Notes/TypescriptNotes.md'])
+        'Notes/TypescriptNotes.md'
+    ])
 
     // Get File names
-    const fileNames = await page.locator("//h4[@class='text-xs font-bold text-slate-800']").allTextContents()
+    const fileNames : string[] = await page.locator("//h4[@class='text-xs font-bold text-slate-800']").allTextContents()
     console.log(fileNames)
 
     // Get File upload success message from pop-up
@@ -84,6 +87,7 @@ test('Multiple File Handling @automationpracticesite', async ({ page }) => {
 })
 
 test('File Downloading @automationpracticesite @filedownload', async ({ page }) => {
+    
     test.skip(true, 'Temporarily disabled for maintenance');
    
     await page.goto('/')
