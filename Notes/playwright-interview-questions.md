@@ -9,6 +9,7 @@ Playwright provides;
 # . Explain the concept of tracing in Playwright and its benefits.
 • Tracing in Playwright records the actions performed during test execution, providing a step-by-step visualization of the test run. It helps in debugging, identifying issues, and understanding the flow of the tests.
 
+
 # . How do you handle file uploads and downloads in Playwright?
 For file uploads, I use the setInputFiles() method. 
 
