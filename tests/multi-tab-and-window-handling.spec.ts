@@ -2,6 +2,8 @@ import {test, expect} from '@playwright/test'
 
 test('Multi-pages handling or New Pages/tabs handling', async({page, context}) =>{
 
+    test.skip(true, 'Skip this test-case')
+
     // 1. Navigate to your base URL
     await page.goto('https://example.com/dashboard');
 

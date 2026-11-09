@@ -3,6 +3,7 @@ import { test, expect } from '../fixtures/testFixture'
 import { config } from '../config/env.config'
 
 test.describe('Login functionality', () => {
+        
         test.beforeEach(async ({ landingPage }) => {
                 await landingPage.navigateToLandingPage()
                 // await landingPage.navigateToLoginPopUp()

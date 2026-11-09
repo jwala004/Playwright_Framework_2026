@@ -5,6 +5,7 @@ test('Alerts and Toasts handling @alerts', async({page}) =>{
     test.skip(true, 'Temporarily disabled for maintenance');
 
     await page.goto('/')
+
     
     await page.getByRole('button', {name : 'Alerts & Windows'}).click()
     // await page.getByRole('link', { name: 'Alerts & Toasts' }).click() // this will simply not work here

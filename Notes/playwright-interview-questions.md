@@ -124,17 +124,8 @@ await page.waitForSelector('div#content');
 -> Using waitForSelector() we can implement explicit wait.
 
 
-# 16. How do you take screenshots in Playwright?
-You can take screenshots using the screenshot() method:
-
-await page.screenshot({ path: 'screenshot.png' });
-
-# How do you take screenshots of specific element in Playwright?
-await page.locator('.user-profile-card').screenshot({ path: 'screenshots/user-card.png' });
-
-
 # What is the difference between page.click() and element.click()?
-locator.click() – Recommended approach
+locator('#loginButton').click() – Recommended approach
 - Uses lazy evaluation: the element is resolved when the action is performed.
 - Automatically waits for actionability conditions.
 - Handles dynamic DOM changes more reliably through re-resolution and retrying.
@@ -146,8 +137,8 @@ ElementHandle.click() – Immediate element reference
 - The handle refers to a particular DOM element.
 - If the page re-renders and that element gets detached, the handle can become stale, causing failures.
 
-const button = await page.$('#loginButton')
-await button?.click()
+// 1. Await the element handle first, then use optional chaining
+await (await page.$('#loginButton'))?.click();
 
 page.click() – Selector-based approach
 - Accepts a selector and locates the element when the action is performed.
@@ -175,8 +166,10 @@ Use the keyboard object to simulate keyboard input:
 await page.keyboard.type('Hello, World!');
 
 #  How do you run tests in parallel using Playwright?
-• You can run testsin parallel by using the --workers flag when executing tests or
-by configuring the workers property in the Playwright configuration file.
+• You can run testsin parallel by using the --workers flag when executing tests or by configuring the workers property in the Playwright configuration file.
+
+npx playwright test --workers=4 // 4 parallel workers
+
 
 # 24. What is the purpose of the page.evaluate() method?
 • The page.evaluate() method allows you to execute JavaScript code in the context
@@ -184,13 +177,15 @@ of the page. It can be used to interact with the DOM or retrieve information:
 
 const title = await page.evaluate(() => document.title);
 
+
 # 25. How do you handle timeouts in Playwright?
 You can set timeouts globally in the configuration file or for specific actions using the timeout option:
 
 await page.goto('https://example.com', { timeout: 5000 });
 
+
 # 26. Explain the use of the waitForEvent() method.
-The waitForEvent() method allows you to wait for a specific event to occur on the page, such as a download or navigation:
+The waitForEvent() method allows you to wait for a specific event to occur on the page, such as a download or navigation or multi tab or page handling:
 
 const [response] = await Promise.all([page.waitForResponse('**/api/data'), page.click('button#loadData')]);
 
@@ -217,12 +212,12 @@ await context.clearCookies();
 
 
 # 31. What is the significance of the context object in Playwright?
-The context object represents a browser context that can have its own cookies,
-local storage, and session storage. It allows for isolated testing scenarios.
+The context object represents a browser context that can have its own cookies, local storage, and session storage. It allows for isolated testing scenarios.
 
 
 # 32. How do you handle mouse actions like drag and drop in Playwright?
 Use the dragAndDrop() method to perform drag-and-drop actions:
+
 await page.locator('div#source').dragAndDrop('div#target');
 
 
@@ -231,7 +226,7 @@ The setInputFiles() method is used to set the files to be uploaded.
 await page.getByText('Drag & Drop file').setInputFiles('test-data/logindata.json')
 
 
-# 34. How do you handle popups in Playwright?
+# . How do you handle popups in Playwright?
 
 test('Handle popup window', async ({ page }) => {
     // 1. Wait for popup event and trigger the action simultaneously
@@ -245,13 +240,17 @@ test('Handle popup window', async ({ page }) => {
     await popup.getByLabel('Password').fill('myPassword');
 });
 
-# 35. How do you take a full-page screenshot in Playwright?
+# . How do you take a full-page screenshot in Playwright?
 • Use the screenshot() method with the fullPage option:
 
 await page.screenshot({ path: 'fullpage.png', fullPage: true });
 
 
-# 36. What is the use of the page.waitForTimeout() method?
+# How do you take screenshots of specific element in Playwright?
+await page.locator('.user-profile-card').screenshot({ path: 'screenshots/user-card.png' });
+
+
+# . What is the use of the page.waitForTimeout() method?
 The page.waitForTimeout() method is used to pause the execution for a specified amount of time (in milliseconds):
 
 await page.waitForTimeout(2000); // Wait for 2 seconds
@@ -282,14 +281,28 @@ await page.goForward();
 # How do you handle slow-loading pages in Playwright?
 Use explicit waits or the waitForSelector() method to wait for specific elements to appear before proceeding:
 
-await page.waitForSelector('div#content', { timeout: 10000 });
+await page.waitForSelector('div#content', { timeout: 10000 })
 
 
 # 41. How do you run Playwright tests in headless mode?
+- 1st way:
+ use: {
+        baseURL: config.baseUrl,
+        // Force headless mode in CI environments
+        headless: process.env.CI ? true : false,
+        screenshot: 'only-on-failure',
+        video: 'retain-on-failure',
+        /* 
+        trace: process.env.CI ? 'on-first-retry' : 'retain-on-failure',
+    }
+
+- 2nd way:
 You can run Playwright tests in headless mode by setting the headless option
 to true in the browser launch configuration:
 
 const browser = await playwright.chromium.launch({ headless: true });
+
+- Playwright runs tests in headless mode by default.
 
 
 # 42. What is the purpose of the page.evaluate() method?
@@ -306,37 +319,38 @@ Use async/await syntax to handle asynchronous operations, ensuring that your cod
 # 44. What is the purpose of the context.tracing.start() method?
 The context.tracing.start() method begins recording a trace of the actions performed during test execution, which can be useful for debugging and analysis.
 
-45. How do you stop tracing in Playwright?
+# . How do you stop tracing in Playwright?
 Use the context.tracing.stop() method to stop recording the trace and save it to a file:
 
 await context.tracing.stop({ path: 'trace.zip' });
 
-46. How do you handle JavaScript errors in Playwright?
+# . How do you handle JavaScript errors in Playwright?
 Use the page.on('console') event to listen for console messages, including errors:
 
 page.on('console', msg => console.log(msg.text()));
 
 
-47. What is the significance of the page.on('response') event?
+# . What is the significance of the page.on('response') event?
 The page.on('response') event allows you to listen for network responses and perform actions based on the response data:
 
 page.on('response', response => {
 console.log(`Response: ${response.url()} - ${response.status()}`);
 });
 
-48. How do you set up Playwright for a new project?
+# . How do you set up Playwright for a new project?
 npm init playwright@latest
 
-49. What is the purpose of the waitForNavigation() method?
+# . What is the purpose of the waitForNavigation() method?
 The waitForNavigation() method waitsfor the page to navigate to a new URL, which is useful after actions that trigger navigation:
 
 await Promise.all([page.click('a#link'), page.waitForNavigation()]);
 
-50. How do you ensure your tests are maintainable and scalable?
-• I follow best practices such as using the Page Object Model (POM), modularizing
-code, implementing reusable functions, and regularly refactoring tests to keep
-them clean and maintainable.
-These questions and answers provide a comprehensive overview for Playwright automation testers preparing for interviews.
+# . How do you ensure your tests are maintainable and scalable?
+I follow best practices such as;
+- using the Page Object Model (POM)
+- modularizing code
+- implementing reusable functions and 
+- regularly refactoring tests to keep them clean and maintainable.
 
 # Handling Standard Alerts or Confirmations (Accept / Dismiss)
 import { test, expect } from '@playwright/test';
@@ -387,6 +401,11 @@ Important distinction:
 
   // Right-Click (Context Click) to open a context menu
   await page.locator('#context-target').click({ button: 'right' });
+  
+  await page.getByRole('link', { name: 'Dashboard' }).click({ button: 'right' });
+
+  // Using a standard locator or CSS selector
+  await page.locator('a[href="/dashboard"]').click({ button: 'right' });
 
   // Double-Click
   await page.locator('#double-click-box').dblclick();
@@ -518,3 +537,64 @@ Key points
 5. response.status() validates the HTTP status code.
 6. expect().toBeVisible() automatically retries until the success message appears or the assertion times out.
 Interview takeaway: This approach validates both API-level behaviour (HTTP 200) and UI-level behaviour (success message) in a single test.
+
+-----------------------------------------------------------------------------------------------------------------------------------
+# i have not defined timeout in my playwright.config.ts or anywhere, then how playwright is assuming or taking a default waiting time for any action or for retrying
+
+Even when you leave playwright.config.ts entirely empty or omit timeout settings, Playwright relies on a set of sensible default values hardcoded directly into its core engine.
+
+Playwright breaks down its built-in defaults into specific categories:
+
+1. The Core Default Timeouts
+Test Timeout (30,000 ms / 30 seconds):
+The maximum time allowed for a single test block to run from start to finish. If a test takes longer than 30 seconds, Playwright automatically fails it with a timeout error.
+
+Expect Timeout (5,000 ms / 5 seconds):
+The time web-first assertions (like await expect(locator).toBeVisible()) will continuously retry before failing. Even if an element takes 3 seconds to appear, the assertion will poll and pass within this 5-second window.
+
+Action Timeout (0 / Disabled by default):
+Individual actions like .click() or .fill() do not have their own isolated timeout by default. Instead, they are bounded by the overall Test Timeout (30 seconds).
+
+Navigation Timeout (0 / Disabled by default):
+Methods like page.goto() also default to 0, meaning they rely on the main test timeout rather than a separate threshold.
+
+2. How Playwright Handles "Retrying" Under the Hood
+When you perform an action (like await page.locator('button').click()), Playwright doesn't just check the DOM once and fail if the element isn't ready. Instead, it enters an auto-waiting loop:
+
+Continuous Polling: Playwright repeatedly checks actionability criteria (is it attached? is it visible? is it stable? is it enabled?).
+
+Dynamic Retrying: It keeps trying every few milliseconds.
+
+The Boundary: This retry loop will continue running seamlessly until either the element becomes ready and the action succeeds, or the global Test Timeout (30 seconds) is exhausted.
+
+This is why tests rarely flake out of nowhere—Playwright builds the retry and waiting logic directly into every locator interaction without requiring you to manually configure sleep statements or explicit waits.
+
+# how to set global or default timeout
+import { defineConfig } from '@playwright/test';
+
+export default defineConfig({
+  // 1. Global timeout for an entire single test (default is 30000ms / 30s)
+  timeout: 45 * 1000, 
+
+  // 2. Global timeout for all web-first assertions (default is 5000ms / 5s)
+  expect: {
+    timeout: 10 * 1000,
+  },
+
+  use: {
+    // 3. Global timeout for individual actions like click(), fill(), selectOption()
+    actionTimeout: 15 * 1000,
+
+    // 4. Global timeout for navigation methods like page.goto()
+    navigationTimeout: 30 * 1000,
+  },
+});
+-----------------------------------------------------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------
