@@ -13,7 +13,7 @@ Playwright provides;
 # . How do you handle file uploads and downloads in Playwright?
 For file uploads, I use the setInputFiles() method. 
 
-await page.getByText('Drag & Drop file here').setInputFiles('test-data/logindata.json')
+await page.getByText('Drag file here').setInputFiles('test-data/logindata.json')
 
 await page.getByText('Drag & Drop files here or Browse files').
     setInputFiles([
@@ -72,10 +72,10 @@ frameLocator() (Lazy & Auto-Waiting)
 
 // Playwright's frameLocator() automatically waits for the iframe to load AND the input to be ready
 
-const frame = page.frameLocator('#myFrame'); // or page.frameLocator('iframe[name="myFrame"]')
+const frameLocator = page.frameLocator('#myFrame'); // or page.frameLocator('iframe[name="myFrame"]')
 
-await frame.locator('#username').fill('admin');
-await frame.locator('#password').fill('password');
+await frameLocator.locator('#username').fill('admin');
+await frameLocator.locator('#password').fill('password');
 
 - Handling nested iframes:
 You can chain frameLocator() calls to access nested frames.
@@ -107,7 +107,8 @@ These assertions help in verifying the expected behavior of the application.
 # How do you generate reports in Playwright?
 I have integrated allure report in my framework. 
 first, I will add the allure dependecy
-then, I will do the configuration changes in playwright.config.ts file like ['allure-playwright', { resultsDir: "allure-results" }]
+then, I will do the configuration changes in playwright.config.ts file like 
+reporter: [['allure-playwright', { resultsDir: "allure-results" }]]
 then, if needed i will make configuration changes in 'package.json' scripts to clear the previously generated report
 then, Run the test-cases
 then, Generte the report using command
@@ -118,9 +119,12 @@ In Playwright, a context represents a browser context, which can have multiple p
 
 
 # 15. What is the purpose of the waitForSelector() method?
-The waitForSelector() method waits for an element to appear in the DOM before proceeding. It helps handle dynamic content loading:
+The waitForSelector() method waits for an element to appear in the DOM before proceeding. It helps us to handle dynamic content loading:
 
 await page.waitForSelector('div#content');
+
+// Explicitly wait for the dynamic question container to appear
+const questionElement = await page.waitForSelector('.security-question-row', { state: 'visible', timeout: 5000 });
 
 -> Using waitForSelector() we can implement explicit wait.
 
@@ -138,7 +142,6 @@ ElementHandle.click() – Immediate element reference
 - The handle refers to a particular DOM element.
 - If the page re-renders and that element gets detached, the handle can become stale, causing failures.
 
-// 1. Await the element handle first, then use optional chaining
 await (await page.$('#loginButton'))?.click();
 
 page.click() – Selector-based approach
@@ -148,7 +151,7 @@ page.click() – Selector-based approach
 await page.click('#loginButton')
 
 
-# 19. How do you handle alerts and confirmations in Playwright?
+# 19. How do you handle dialog (alerts and confirmations) in Playwright?
 Use the page.on('dialog') event to handle alerts and confirmations:
 
 page.on('dialog', async dialog => {
@@ -167,10 +170,32 @@ Use the keyboard object to simulate keyboard input:
 await page.keyboard.type('Hello, World!');
 
 #  How do you run tests in parallel using Playwright?
-• You can run testsin parallel by using the --workers flag when executing tests or by configuring the workers property in the Playwright configuration file.
+- Methpd 1:
+Configure in the 'playwright.config.ts' file;
+
+workers : 2 
+and set fullyParallel : true
+
+- Methpd 2:
+You can run tests in parallel by using the --workers flag when executing tests or
+by configuring the workers property in the Playwright configuration file.
 
 npx playwright test --workers=4 // 4 parallel workers
 
+/*
+1. What workers Does
+workers controls capacity - it defines the maximum number of parallel worker processes Playwright is allowed to spawn at the same time (e.g., workers: 4).
+
+2. What fullyParallel Does
+fullyParallel controls granularity — it determines what runs in parallel:
+
+fullyParallel: false (Default): Playwright runs different test files in parallel across your workers, but tests within the same file run sequentially one after another.
+
+fullyParallel: true: Playwright runs tests within the same file in parallel across your workers, alongside running multiple files concurrently.
+
+Why This Matters
+If you have 1 test file containing 10 tests, and you set workers: 4 but leave fullyParallel as its default (false), all 10 tests will still execute sequentially on a single worker because they belong to the same file. Only by setting fullyParallel: true (or splitting those 10 tests into separate files) will Playwright distribute them across your 4 workers.
+*/
 
 # 24. What is the purpose of the page.evaluate() method?
 • The page.evaluate() method allows you to execute JavaScript code in the context
@@ -188,8 +213,6 @@ await page.goto('https://example.com', { timeout: 5000 });
 # 26. Explain the use of the waitForEvent() method.
 The waitForEvent() method allows you to wait for a specific event to occur on the page, such as a download or navigation or multi tab or page handling:
 
-const [response] = await Promise.all([page.waitForResponse('**/api/data'), page.click('button#loadData')]);
-
 
 # 27. How do you assert that an element is visible in Playwright?
 Use the toBeVisible() assertion to check if an element is visible:
@@ -202,13 +225,14 @@ The page.goto() method is used to navigate to a specified URL and wait for the p
 
 
 # 29. How do you handle multiple tabs in Playwright?
-You can handle multiple tabs by listening for the page.on('popup') event and managing the new page instance:
+You can handle multiple tabs by listening for the page.on('page') event and managing the new page instance:
 
-const [newPage] = await Promise.all([page.waitForEvent('popup'), page.click('a#openNewTab')]);
+const [newPage] = await Promise.all([page.waitForEvent('page'), page.click('a#openNewTab')]);
 
 
 # 30. How do you clear cookies in Playwright?
 Use the context.clearCookies() method to clear all cookies in the browser
+
 await context.clearCookies();
 
 
@@ -220,11 +244,6 @@ The context object represents a browser context that can have its own cookies, l
 Use the dragAndDrop() method to perform drag-and-drop actions:
 
 await page.locator('div#source').dragAndDrop('div#target');
-
-
-# 33. What is the purpose of the setInputFiles() method?
-The setInputFiles() method is used to set the files to be uploaded.
-await page.getByText('Drag & Drop file').setInputFiles('test-data/logindata.json')
 
 
 # . How do you handle popups in Playwright?
@@ -348,10 +367,11 @@ await Promise.all([page.click('a#link'), page.waitForNavigation()]);
 
 # . How do you ensure your tests are maintainable and scalable?
 I follow best practices such as;
-- using the Page Object Model (POM)
+- Use the Page Object Model (POM)
 - modularizing code
 - implementing reusable functions and 
 - regularly refactoring tests to keep them clean and maintainable.
+
 
 # Handling Standard Alerts or Confirmations (Accept / Dismiss)
 import { test, expect } from '@playwright/test';
@@ -427,6 +447,7 @@ Important distinction:
 
 # How do you optimize playwright test execution?  
 
+
 # What is the use of package-lock.json?
 package-lock.json is a file automatically generated by npm that records the exact versions of dependencies installed in your Node.js project.
 
@@ -434,6 +455,25 @@ Its main purpose is to ensure consistent and reproducible dependency installatio
 
 
 # trace - question on it?
+
+# Given 5 open browser tabs/pages, write the playwright code to identify and switch control to the 3rd page.
+await page.locator('abc1').click()
+await page.locator('abc2').click()
+await page.locator('abc3').click()
+await page.locator('abc4').click()
+await page.locator('abc5').click()
+// 1. Get an array of all open pages in the browser context
+const allPages = context.pages();
+
+// 2. Target the 3rd page using 0-based indexing (index 2 = 3rd page)
+const thirdPage = allPages[2];
+
+// 3. Optional: Bring the tab to the front (focus it in the browser UI)
+await thirdPage.bringToFront();
+
+// 4. Perform interactions on the 3rd page
+await thirdPage.waitForLoadState('domcontentloaded');
+await thirdPage.locator('#element-on-third-tab').click();
 
 # Top Playwright CLI Commands You Must Know!
 Playwright CLI (Command-Line Interface) is a powerful command-line tool provided by the Playwright framework to facilitate various tasks related to test automation. It serves as an interface to create, debug, and manage Playwright projects efficiently.
@@ -591,8 +631,83 @@ export default defineConfig({
   },
 });
 -----------------------------------------------------------------------------------------------------------------------------------
+Introduce yourself and summarize your test automation experience
+Here is a simplified, interview-ready answer based on your experience.
+
+1. Professional experience
+- I am a Quality Engineering and Test Automation professional with 7+ years of experience.
+- Currently working as a Senior Test Engineer at GlobalLogic India.
+2. Automation expertise
+- My primary expertise is Playwright with TypeScript.
+- I also have strong experience with Selenium WebDriver, Java, TestNG, and Cucumber.
+- Experienced in developing automation frameworks from scratch and enhancing existing frameworks.
+3. API testing
+- Hands-on experience with REST Assured and Postman.
+- Worked on API automation, authentication, API chaining, request/response validation, and integration testing.
+4. Framework development
+- Experience implementing Page Object Model, reusable utilities, custom fixtures, data-driven testing, and cross-browser testing.
+- Worked with JSON, CSV, and Excel-based test data management.
+5. CI/CD and reporting
+- Experience integrating automated tests into CI/CD pipelines using GitHub Actions and Jenkins.
+- Familiar with Maven, Git, Docker, and Allure reporting.
+6. AI-assisted testing
+- Production experience with AI-assisted test design, test automation, LLM response evaluation, and RAG testing.
+- Familiar with GitHub Copilot, Claude Code, and MCP.
+7. Project experience
+
+- Contributed to enterprise applications such as Entrust IID and Hitachi AI MPS, including validation of AI-powered workflows.
+
+8. Additional strengths
+- Strong understanding of Agile methodologies, defect management, and end-to-end testing.
+- Mentored junior QA engineers and interns.
+- Recognized with five Best Performer awards.
+
+Strong closing statement
+"My overall focus has been on building reliable, scalable, and maintainable automation solutions, improving test coverage, and integrating automation into CI/CD pipelines to accelerate software delivery while maintaining product quality."
 
 -----------------------------------------------------------------------------------------------------------------------------------
+# What architectural features make playwright faster and more reliable than selenium?
+1. Key architectural advantages
+1. Direct browser communication
+- Playwright communicates with browser engines through browser-specific automation protocols.
+- It avoids the traditional WebDriver HTTP request-response model used by Selenium.
+- This reduces communication overhead in many automation scenarios.
+2. Built-in auto-waiting
+- Automatically waits for elements to become actionable before performing operations.
+- Checks visibility, stability, enabled state, and whether the element receives events.
+- Reduces flaky tests and unnecessary explicit waits.
+3. Browser Contexts
+- Supports multiple isolated browser contexts within a single browser instance.
+- Each context has independent cookies, cache, local storage, and session state.
+- Enables faster and more efficient parallel test execution without launching a separate browser for every test.
+4. Locator architecture
+- Uses lazy evaluation to locate elements when actions are performed.
+- Automatically re-resolves elements if the DOM changes.
+- Provides better reliability for dynamic applications compared with holding stale element references.
+5. Built-in network interception
+- Provides native APIs to intercept, mock, modify, and monitor network requests and responses.
+- Reduces dependency on external tools for API mocking and network-level testing.
+6. Event-driven architecture
+- Supports event listeners for popups, downloads, dialogs, requests, and responses.
+- Makes handling asynchronous browser events more straightforward.
+7. Built-in parallel execution support
+- Supports parallel execution through Playwright workers and isolated browser contexts.
+- Reduces test execution time when tests are designed independently.
+
+2. Playwright vs Selenium – Quick comparison
+Feature	Playwright	Selenium
+Communication	        Browser-specific protocols	            W3C WebDriver
+Auto-waiting	        Built-in	                            Explicit waits generally needed
+Element handling	    Locator-based, lazy evaluation	        WebElement references
+Browser isolation	    Browser contexts	                    Separate sessions
+Network interception	Built-in	                            Additional capabilities/tools may be needed
+Parallel execution	    Built-in workers	                    Test framework/Grid-based
+Browser support	        Chromium, Firefox, WebKit	            Chrome, Firefox, Edge, Safari, etc.
+
+- Senior SDET interview tip
+Don't claim that Playwright is always faster than Selenium. Actual performance depends on the application, test design, browser, infrastructure, and parallelization strategy.
+
+Also, Selenium 4 has introduced improvements such as Selenium Manager and WebDriver BiDi support, so the comparison should be based on the actual capabilities being discussed rather than suggesting Selenium is outdated.
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------

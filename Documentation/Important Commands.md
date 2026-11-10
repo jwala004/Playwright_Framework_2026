@@ -35,6 +35,9 @@ $env:TEST_ENV="uat"; npx playwright test tests/login-testdata-factory.spec.ts --
 
 $env:TEST_ENV="uat"; npx playwright test tests/frame-handling.spec.ts --headed --project=chromium
 
+$env:TEST_ENV="uat"; npx playwright test tests/multi-tab-and-window-handling.spec.ts --headed --project=chromium
+
+
 
 
 

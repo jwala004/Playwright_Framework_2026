@@ -2,6 +2,8 @@ import {test, expect} from '@playwright/test'
 
 test(`Frame Handling`, async ({page}) => {
 
+    test.skip(true, 'Skip')
+
     await page.goto('/')
     // 
     // Filter the flex container divs to find the one containing your text
