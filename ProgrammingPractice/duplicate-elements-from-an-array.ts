@@ -17,36 +17,34 @@ for(const a of arr){
 const arr = [5, 10, 15, 5, 20, 10, 25]
 
 let duplicateArray = new Array() // empty array declaration
-let duplicateArray2 = [] // empty array declaration
-
-let counter = 0
+// let duplicateArray2 = [] // empty array declaration
 
 const duplicateFinderSet = new Set<number>()
 
 for(const a of arr){
     if(duplicateFinderSet.has(a)){
         duplicateArray.push(a)
-        duplicateArray2.push(a)
+        // duplicateArray2.push(a)
     }else{
         duplicateFinderSet.add(a)
     }
 }
 console.log(duplicateArray)
+// console.log(duplicateArray2)
 
 // Duplicate elements from an array [M-3]
-const arr = [5, 10, 15, 5, 20, 10, 25]
+const numbers = [5, 10, 15, 5, 20, 10, 25];
 
-let counter = 0
+const seen = new Set<number>();
+const duplicates = new Set<number>();
 
-const duplicateFinderSet = new Set<number>()
-const duplicateElementsSet = new Set<number>
-
-for(const a of arr){
-    if(duplicateFinderSet.has(a)){ // checking if the value is already present in previous set then adding it into a new set
-        duplicateElementsSet.add(a)
-    }else{
-        duplicateFinderSet.add(a)
+for (const num of numbers) {
+    if (seen.has(num)) {
+        duplicates.add(num);
+    } else {
+        seen.add(num);
     }
 }
-console.log(duplicateElementsSet) // it will print/contain all duplicate elements
-console.log(duplicateFinderSet)
+
+console.log(duplicates); // Contains all duplicate elements
+console.log(seen);       // Contains all unique elements encountered

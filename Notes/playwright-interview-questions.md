@@ -6,8 +6,38 @@ Playwright provides;
 - built-in support for mobile emulation and accessibility testing.
 - It also offers features like tracing, screenshots, and PDF generation.
 
+# Playwright Advantages over Selenium.
+1. Pick locator tool
+2. Code generation tool (Playwright Test Generator)
+3. Fixtures
+4. Locators of Playwright are very advanced
+5. Playwright installation and setup is very easy (Easy Setup and Configuration)
+6. Parallel testing feature
+7. Screenshot feature (Taking screenshot is very easy, it's configuration is very easy)
+8. Codegen tool
+9. Playwright Inspector (Debugging tool)
+10. Trace Viewer
+11. Built-in Reporters: List, Dot, Line, JSON, JUnit, HTML and Allure reports
+12. Reuse of Authentication state (Save and Reuse Authentication State | Skip Login)
+13. Cross-Browser Support - Chromium browsers (Chrome, Edge), Webkit (Safari), and Firefox
+14. Multi-Language Support - JavaScript / TypeScript, Python, Java
+15. Playwright has its own test runner
+16. Playwright is lightning fast, it is as much fast that sometimes you need to slow down the execution or pause the test to validate.
+17. Handle New Page | New Tab | Child Window is very easy
+18. Playwright execution from command is very dynamic and flexible
+19. implementing retries feature for failed test-cases are very easy
+20. playwright.config.ts file is one of the best features of playwright
+21. UI Mode in Playwright
+22. Reading test data from external sources(json, csv, excel, etc)
+23. Upload files (Upload Single File/Multiple Files)
+24. Visual Testing in Playwright | Visually Compare Screenshot
+25. CI/CD support
+26. Parameterization (Parameterize Tests)
+27. MCP support
+28. Modern and elegant
+
 # . Explain the concept of tracing in Playwright and its benefits.
-• Tracing in Playwright records the actions performed during test execution, providing a step-by-step visualization of the test run. It helps in debugging, identifying issues, and understanding the flow of the tests.
+Tracing in Playwright records the actions performed during test execution, providing a step-by-step visualization of the test run. It helps in debugging, identifying issues, and understanding the flow of the tests.
 
 
 # . How do you handle file uploads and downloads in Playwright?
@@ -55,15 +85,13 @@ test('Download and validate sample text file', async ({ page }) => {
 });
 
 
-# . What is the purpose of the Playwright Inspector and how do you use it?
+# What is the purpose of the Playwright Inspector and how do you use it?
 The Playwright Inspector is a debugging tool that allows you to inspect the DOM, perform actions, and generate code snippets. It helps in understanding the structure of the page and debugging issues by providing a visual representation of the elements.
 
 
 #  Explain the different types of locators available in Playwright.
 # -> this one needs improvement
-Playwright supports various locator types, including text, CSS, XPath, id, and
-data-testid. I can combine these locators using logical operators like and, or,
-and not to create more specific and robust locators.
+Playwright supports various locator types, including text, CSS, XPath, id, and data-testid. I can combine these locators using logical operators like and, or, and not to create more specific and robust locators.
 
 
 # How do you handle iframes and nested frames in Playwright?
@@ -100,6 +128,8 @@ toHaveValue()
 toHaveAttribute()
 toHaveClass()
 toBeChecked()
+toBeEnabled()
+toBeDisabled()
 
 These assertions help in verifying the expected behavior of the application.
 
@@ -445,6 +475,38 @@ Important distinction:
   // Release the mouse button
   await page.mouse.up();
 
+# How do you handle dynamic elements in playwright?
+# A web element is changing dynamically every time the page loads. How will you locate it reliably?
+My approach:
+1. Identify stable attributes: Look for attributes such as name, placeholder, role, aria-label, or data-testid.
+2. Use text-based locators: If the element has consistent visible text, use getByText() or getByRole().
+3. Use partial attribute matching: If part of an attribute remains consistent, use CSS *= or XPath.
+4. Use parent-child relationships: Locate the element relative to a stable parent element.
+5. Use regular expressions: If the dynamic value follows a predictable pattern, use regex-based matching.
+6. Collaborate with developers: If no reliable attribute exists, request a stable automation attribute such as data-testid.
+
+I prefer accessibility-based locators such as getByRole() and getByLabel(), or stable attributes like data-testid. And these locators also provide auto waiting feature.
+
+Basic Playwright examples
+- Scenario 1: Dynamic ID
+
+Suppose the ID changes on every page load:
+<button id="submit_12345">Submit</button>
+
+Use stable visible text:
+await page.getByRole('button', { name: 'Submit' }).click();
+
+- Scenario 2: Partially dynamic attribute
+<button id="submit_12345">Submit</button>
+
+Use partial matching:
+await page.locator('[id^="submit_"]').click();
+
+- Scenario 3: Using a stable parent
+await page.locator('.login-form')
+    .getByRole('button', { name: 'Submit' })
+    .click();
+
 # How do you optimize playwright test execution?  
 
 
@@ -474,6 +536,11 @@ await thirdPage.bringToFront();
 // 4. Perform interactions on the 3rd page
 await thirdPage.waitForLoadState('domcontentloaded');
 await thirdPage.locator('#element-on-third-tab').click();
+
+# this and super keyword
+this: Refers to the current object instance. It is commonly used to distinguish instance variables from local parameters (e.g., this.name = name).
+
+super: Refers to the parent class object. While it calls parent constructors, it is also used to access parent methods and overridden variables.
 
 # Top Playwright CLI Commands You Must Know!
 Playwright CLI (Command-Line Interface) is a powerful command-line tool provided by the Playwright framework to facilitate various tasks related to test automation. It serves as an interface to create, debug, and manage Playwright projects efficiently.
@@ -630,7 +697,12 @@ export default defineConfig({
     navigationTimeout: 30 * 1000,
   },
 });
------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# How do you handle dynamic loading spinners, AJAX calls, and elements that appear asynchronously?
+- I handle dynamic loading and asynchronous behaviour using Playwright's built-in auto-waiting and web-first assertions. For loading spinners, I wait until they become hidden[await expect(page.locator('.loading-spinner')).toBeHidden();]. 
+For AJAX calls, I use page.waitForResponse() to wait for specific API responses. For asynchronously appearing elements, I use assertions like toBeVisible() and toBeEnabled(), which automatically retry until the expected condition is satisfied. I avoid hard-coded waits like waitForTimeout() because they increase execution time and can make tests flaky.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Introduce yourself and summarize your test automation experience
 Here is a simplified, interview-ready answer based on your experience.
 

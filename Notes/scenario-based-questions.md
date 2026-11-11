@@ -7,29 +7,30 @@ In parallel, I would develop automation scripts using Playwright or Selenium, pr
 Once the actual application becomes available, I would replace the mocks with real services and execute integration, end-to-end, regression, and cross-browser testing.
 This approach helps identify defects early, reduces dependency on development completion, and improves overall testing efficiency.
 
-2. How would you test when different components are not ready?
-Application status	            Testing approach	                                                        Example
----------------------------------------------------------------------------------------------------------------------------------
-UI is not ready	                Review requirements, design test cases, prepare automation framework Prepare login test scenarios
----------------------------------------------------------------------------------------------------------------------------------
+
+# 2. How would you test when different components are not ready?
+Application status	            Testing approach	                                                             Example
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+UI is not ready	                Review requirements, design test cases, prepare automation framework           Prepare login test scenarios
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 UI is ready, backend is 
-not ready	                    Mock API responses	                               Simulate successful and failed login responses
----------------------------------------------------------------------------------------------------------------------------------
+not ready	                      Mock API responses	                                                           Simulate successful and failed login responses
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Backend API is ready, UI is 
-not ready	                    Test APIs independently	                        Validate status codes, schema, and business rules
----------------------------------------------------------------------------------------------------------------------------------
+not ready	                      Test APIs independently	                                                       Validate status codes, schema, and business rules
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 UI and backend are 
-independently ready	            Component and integration testing	                Verify frontend sends the correct payload
----------------------------------------------------------------------------------------------------------------------------------
-Entire application is ready	    End-to-end and regression testing	                Login → dashboard → logout
----------------------------------------------------------------------------------------------------------------------------------
+independently ready	            Component and integration testing	                                             Verify frontend sends the correct payload
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Entire application is ready	    End-to-end and regression testing	                                             Login → dashboard → logout
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 # 2. How would you resolve conflicts in your team?
 
 
-# 3. What is the most challenging thing you faced while designing automation framework?
-**Answer:**
 
+#  What is the most challenging thing you faced while designing automation framework?
 The most challenging part was not simply writing automation scripts, but designing a framework that was maintainable, reusable, environment-independent, and secure enough for both local development and CI/CD execution.
 
 I would highlight three major challenges:
@@ -95,36 +96,14 @@ For your interview, I'd use this line:
 "I designed the framework around a fail-fast principle: validate configuration, dependencies, and test data as early as possible so that invalid execution conditions are detected before they cascade into misleading test failures."
 
 
-
 5. 
 
 **Conclusion:**
 
 Overall, these challenges taught me that a good automation framework is not just about test coverage. It also needs a clear separation of concerns, consistent configuration management, reliable test-data handling, and secure credential management across local and CI/CD environments.
 
-
-# 4 can we assign negative priority to test-cases in testng
-Ye we can, and negative priority also works correctly. but it is suggested not to use it. as it creates confusion.
-
 # 5 When do you use xpath over css selectors
 I prefer CSS selectors for straightforward element identification and use XPath when I need relationship-based navigation or more complex DOM traversal. I choose based on locator reliability and maintainability, not just syntax.
-
-# 6 When do you use javascript executor?
-I use JavaScriptExecutor when Selenium's standard WebDriver APIs are insufficient for a specific browser-side operation, not as a replacement for normal Selenium interactions.
-
-Common scenarios where I use JavaScriptExecutor:
-Scenario 1: Scroll the page
-Scenario 2: Click on an element using JavaScript
-
-# 7 What should be the ideal way to store data using selenium web driver only?
-I will prefer to use it in a normal java file, and retrieve it using array, list or map based on the type of data.
-Data type or requirement	                Recommended approach
-Small, fixed values	                        Java constants or a separate data class
-Multiple related records	                List, Map, or custom Java objects
-Environment-specific configuration	        .properties files or environment variables
-Large or frequently changing test datasets	JSON, CSV, or Excel
-Sensitive credentials	                    Environment variables or a CI/CD secret store
-Data-driven testing with TestNG	            @DataProvider combined with an appropriate data source
 
 # 8 what happens if you receive browser notifications during test automation execution?
 My approach is to handle browser notifications through browser configuration before launching the browser, rather than trying to interact with them after they appear.
@@ -161,107 +140,6 @@ Common causes include:
 my answer; UI layer, business logic layer, db layer
 The three tiers in a typical 3-tier architecture are the Presentation Layer (UI), Business Logic Layer, and Data Layer (Database).
 
-# 11. Write a java program to filter elemnts using java 8
-
-# 12. Write a java program to sort the elements using java 8 
-
-# 13. Comparable vs Comparator
-
-# 14. Explain the new features introuduced in Selenium 4
-Selenium 4: Major features:
-1. W3C WebDriver protocol: Selenium 4 uses the W3C WebDriver standard as its primary browser automation protocol, improving interoperability between Selenium clients, browser drivers, and browsers.
-
-2. Relative Locators
-- above()
-- below()
-- toLeftOf()
-- toRightOf()
-- near()
-
-3. New Window and Tab Management
-// Open a new tab
-driver.switchTo().newWindow(WindowType.TAB);
-
-// Open a new window
-driver.switchTo().newWindow(WindowType.WINDOW);
-
-4. Selenium Manager
-Selenium Manager automates browser driver management.
-
-Other important features:
-- Selenium Grid 4 improvements
-- Chrome DevTools Protocol (CDP) support
-- WebDriver BiDi support
-- Improved Window and Browser APIs
-- Take screenshots of individual elements
-- Print pages to PDF
-- Updated browser options and capabilities
-- Improved support for advanced browser automation
-
-# 15. Difference between Page object model(POM) and Page factory
-
-
-# 16. What is the meaning and uses of the double colon :: (method refrence operator) in Java Streams?
-
-
-# 17. Where and how have you used Java 8 stremas in your automation framework?
-
-
-# 18. How do you locate and handle elements inside Shadow DOM?
-- getShadowRoot()
-
-# 19. How do you create and throw a custom exception in Java?
-- 
-
-# 20. Write selenium code to handle switching between multiple browser windows and frames.
-- 
-
-# 21. Implement Serialization and DeSerialization using Java code.
-
-
-# 22. Implement Oops concepts for a Saving bank system.
-
-
-# 23. What is the Page factory design pattern?
-
-
-# 24. What is the Singleton Design Pattern or which other patterns are you familiar with?
-
-
-# 25. Where can we practically use LinkedList concepts in test automation?
-In test automation, I can use LinkedList when I need efficient insertion or removal at the beginning or end of a sequential collection. For example, 
-- I can use it to implement a FIFO queue for pending automation tasks
-- manage a sequence of actions that are consumed during execution, or maintain a bounded history of recent events.
-
-# 26. Explain the complete Exception hierarachy in Java.
-    Object
-       |
-       v
-    Throwable
-       |
-       +-----------------------------+
-       |                             |
-       v                             v
-      Error                      Exception
-       |                             |
-       |                             +-----------------------------+
-       |                             |                             |
-       v                             v                             v
- Serious JVM/System           Checked Exceptions           RuntimeException
- Problems                     (Compile-time checked)       (Unchecked)
-                                    |                              |
-                                +-- IOException            +-- NullPointerException
-                                +-- FileNotFoundException  +-- ArithmeticException       
-                                                           
-
-
-# 27. What is the difference between fail-fast and fail-safe iterators in Java?
-
-
-
-# 28. When should you use ConcurrentHashMap?
-- ConcurrentHashMap is a thread-safe implementation of the Map interface.
-- Use ConcurrentHashMap when multiple threads need to read and update a shared map concurrently, and you need thread-safe operations without synchronizing the entire map for every operation.
 
 # 29. What is ObjectMapper in Rest Assured/Jackson library?
 - Jackson's ObjectMapper converts 
@@ -276,23 +154,7 @@ detailed answer below;
 - In TestNG, the standard way to rerun only failed test cases is to use the automatically generated testng-failed.xml file.
 - TestNG generates this file when a test run has failures. It contains the failed test methods and their required configuration, allowing you to rerun them without executing the entire suite again.
 
-# 32. How do you read data from the Examples table section in Cucumber without using Scenario outline?
-- An Examples table is designed to work with a Scenario Outline, not with a regular Scenario.
 
-- The Examples table is associated with a Scenario Outline, and Cucumber substitutes its values into the outline for each execution. A normal Scenario cannot directly access an Examples table. If I want to execute multiple data combinations without using a Scenario Outline, I can use a DataTable in the step definition and retrieve its rows using asMaps(). Alternatively, I can load test data from an external source such as JSON, CSV, or Excel.
-
-Interview takeaway: 
-Examples table → Scenario Outline; 
-DataTable → regular Scenario or Scenario Outline step arguments. They are different Cucumber mechanisms.
-
-# 33. How do you perform parallel execution in a Cucumber framework?
-
-
-
-# 34. Explain the usage of hooks in Cucumber.
-
-
-# 35. Explain the CI/CD Jenkins process for running automated Selenium tests.
 
 
 # 36. What is the difference between Continuous Integration and Continuous Deployment?
@@ -305,29 +167,14 @@ Continuous Deployment goes a step further: every change that successfully passes
 
 The key difference is that CI focuses on integrating and validating code, whereas Continuous Deployment automates the entire path through to production release. Continuous Delivery is the related practice in which the application is always release-ready, but production deployment can still require manual approval.
 
-# 37. Write Java code to verify the response of API for a particular scenario with assertions.
 
-
-
-# 38. What are the differnet log levels in log4j2?
-FATAL → ERROR → WARN → INFO → DEBUG → TRACE
-- FATAL / ERROR: Something seriously wrong happened.
-- WARN: Something unexpected happened; investigate if necessary.
-- INFO: What is happening?
-- DEBUG: Why is it happening?
-- TRACE: Exactly how is execution progressing?
-
-# 39. what are the different types of dependecy injection used in your framework? usage of @componenet
-
-
-# 40. What are the root causes of flakiness in Selenium scripts, and in how many ways can you fix them?
 
 
 # 41. Explain the Root Cause Analysis(RCA) techniques. 
 
 
-# 42. How you can fix the git conflicts?
 
+# 42. How you can fix the git conflicts?
 In Git, a merge conflict occurs when Git cannot automatically reconcile changes between two branches. This commonly happens when two developers modify the same lines of a file, or when one developer modifies a file while another deletes it.
 
 As a Senior SDET, you should be able to explain how to identify, resolve, and verify conflicts safely.
@@ -346,8 +193,7 @@ Keep the correct changes, combine them if necessary, and remove conflict markers
 Step 4: Stage and verify
 Stage the resolved files, complete the merge or rebase, and run relevant tests.
 
-# 43. Explain the Branching strategy used in Git
-- A Git branching strategy defines how a team creates branches, develops features, fixes bugs, merges code, and manages releases.
+rebase: it is performed on the feature branch to clean up the local commit history before creating a pull request.
 
 
 # 44. What are common Estimation techniques in Agile?
@@ -359,206 +205,13 @@ Stage the resolved files, complete the merge or rebase, and run relevant tests.
 # 46. What is a test pyramid concept?
 
 
-=================================================================================================================================
-# 29. What is ObjectMapper in Rest Assured/Jackson library?
-- Jackson's ObjectMapper converts 
-Java objects into JSON and JSON into Java objects. This process is called serialization and deserialization.
-
-Serialization: Java object to JSON
-Suppose we have an Employee class:
-public class Employee {
-    private String name;
-    private int age;
-
-    public Employee() {}
-
-    public Employee(String name, int age) {
-        this.name = name;
-        this.age = age;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-}
-
-Now convert the object to JSON using Jackson:
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-public class EmployeeTest {
-    public static void main(String[] args) throws Exception {
-
-        Employee employee = new Employee("Jwala", 30);
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        String json = mapper.writeValueAsString(employee);
-
-        System.out.println(json);
-    }
-}
-
-Output:
-{
-  "name": "Jwala",
-  "age": 30
-}
-
-Here, writeValueAsString() serializes the Java object into a JSON string.
-When is this useful? When you want to create an API request body from a Java object instead of manually constructing JSON strings.
-
-Deserialization: JSON to Java object
-Suppose the API returns this JSON:
-{
-  "name": "Jwala",
-  "age": 30
-}
-
-You can convert it into an Employee object:
-String json = """
-    {
-        "name": "Jwala",
-        "age": 30
-    }
-    """;
-
-ObjectMapper mapper = new ObjectMapper();
-
-Employee employee = mapper.readValue(json, Employee.class);
-
-System.out.println(employee.getName());
-System.out.println(employee.getAge());
-
-Output:
-Jwala
-30
-
-Here, readValue() deserializes the JSON into a Java object.
-
-# How do you use ObjectMapper with REST Assured?
-A. Convert a Java object into a request body
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-
-Employee employee = new Employee("Jwala", 30);
-
-ObjectMapper mapper = new ObjectMapper();
-String requestBody = mapper.writeValueAsString(employee);
-
-RestAssured.given().contentType(ContentType.JSON).body(requestBody)
-.when()
-.post("/employees")
-.then()
-.statusCode(201);
-
-
-This explicitly uses Jackson to serialize the object before sending it.
-B. Let REST Assured serialize the object automatically
-You often don't need to instantiate ObjectMapper yourself:
-Employee employee = new Employee("Jwala", 30);
-
-given().contentType(ContentType.JSON).body(employee)
-.when()
-    .post("/employees")
-.then()
-    .statusCode(201);
-
-
-When a compatible Jackson serializer is available and configured, REST Assured can serialize the Java object automatically.
-
-Interview distinction: REST Assured handles the HTTP request and response; Jackson provides JSON-to-object and object-to-JSON conversion.
-
-# Serialization/Deserialization:
-1. Serialization
-Serialization is the process of converting a Java object into a JSON.
-In simple words:
-Java Object → JSON
-
-2. Deserialization
-Deserialization is the process of converting JSON data received from an API into a Java object.
-
-In simple words:
-JSON → Java Object
-
-Interview-ready answer:
-Serialization is the process of converting a Java object into JSON format, generally when sending request payloads to an API. Deserialization is the reverse process, where JSON 
-received from an API is converted into a Java object. In REST Assured, we can use POJOs with the body() method for serialization and response.as(Employee.class) for deserialization. 
-Jackson's ObjectMapper can perform both conversions.
-
-My recommendation: Remember this simple rule for interviews:
-- POST/PUT: Java POJO → JSON = Serialization.
-- GET response: JSON → Java POJO = Deserialization
-
-# => a follow-up question comes, after Serialization  and Deserialization, What is ObjectMapper?
-
-# What is ObjectMapper?
-- Avoids manually building JSON strings.
-- Makes request payloads easier to maintain using POJOs.
-- Converts API responses into Java objects for assertions.
-- Supports nested objects and collections.
-- Supports configuration for property naming, unknown fields, date formats, and custom serializers/deserializers.
-For example, you can deserialize an API response and then assert against typed fields instead of repeatedly extracting individual JSON values.
-
-Interview-ready answer
-ObjectMapper is a class from the Jackson Databind library used to serialize Java objects into JSON and deserialize JSON into Java objects. 
-Using POJOs and ObjectMapper improves type safety, readability, and maintainability compared with manually constructing JSON strings.
-
-Remember these two methods:
-- writeValueAsString(object)	Java object → JSON string
-- readValue(json, Employee.class)	JSON string → Java object
-
-Example:
-Serialization:
-ObjectMapper mapper = new ObjectMapper();
-String json = mapper.writeValueAsString(employee);
-
-Deserialization:
-Employee employee = mapper.readValue(json, Employee.class);
-
-# What is API mocking?
-API mocking means creating a simulated API that behaves like a real API without depending on the actual backend service.
-WireMock intercepts requests sent to its mock server and returns predefined responses.
-Step 1 — Create a WireMock server and define a mock API
-
-When would you use API mocking in a real project?
-Consider this scenario:
-
-You are testing an Order Management application.
-
-When a user places an order, your application calls three external services:
-1. Payment Service
-2. Inventory Service
-3. Notification Service
-However, the Payment Service is not ready yet.
-
-Instead of blocking your testing activities, you can mock the Payment API using WireMock.
-
-For example:
-- Return 200 when payment succeeds.
-- Return 400 when payment details are invalid.
-- Return 500 when the payment service encounters an internal error.
-- Simulate a timeout to test how your application handles slow responses.
-This allows you to test your application's behavior without depending on the actual Payment Service.
-
-
 # 13. How do you ensure test coverage?
-• I use techniques such as requirement traceability matrices, code coverage
-tools, and regular reviews of test cases to ensure all functionalities are
+I use techniques such as requirement traceability matrices, code coverage tools, and regular reviews of test cases to ensure all functionalities are
 adequately tested.
 
-# 22. How do you handle a situation where requirements are unclear?
-• I seek clarification from stakeholders, conduct discussions, and collaborate
-with the team to gather necessary information before proceeding with testing.
 
-# How do you handle dynamic elements in Selenium using Java?
-I use techniques like XPath with indexes, regular expressions, and custom
-locators to handle dynamic elements. I also leverage the WebDriverWait class
-with ExpectedConditions to wait for elements to appear.
+# 22. How do you handle a situation where requirements are unclear?
+I seek clarification from stakeholders, conduct discussions, and collaborate with the team to gather necessary information before proceeding with testing.
 
 
 # today i was asked an interview question, it was something like on a page some random security questions are getting loaded, each time differently, and for each each question there are some values in the dropdown. how would you automate it? (DXC)
@@ -571,6 +224,9 @@ I would follow these steps:
 - First, I would carefully understand the issue reported by the customer or senior manager.
 - Gather details such as the affected functionality, user, occurrence time, error message, screenshots, and business scenario.
 - Clarify the expected and actual behaviour.
+- Revisit the requirement doc and jira story, check was the functionality clearly mentioned.
+- Is there a test-case present for it? was it executed?
+- 
 
 2. Assess severity and business impact
 - Identify whether the issue impacts a critical business workflow.
@@ -588,6 +244,7 @@ I would follow these steps:
 - Use the affected user's scenario, test data, browser, and relevant conditions where possible.
 - If reproduction in production is risky, use staging or a production-like environment.
 - Check whether the issue is consistent, intermittent, or user-specific.
+- Check is it because of some corrupted data, some old user, or previously saved configuration is creating the problem
 
 5. Investigate and identify the root cause
 - Collaborate with developers, DevOps, and other relevant teams.
@@ -632,4 +289,33 @@ One additional tip: As a Senior SDET, emphasize that you take ownership beyond d
 
 
 
+
+# How would you trigger automated smoke tests automatically after a successful build deployment?
+
+
+
+
+# Explain the branching strategy used in Git
+- A Git branching strategy defines how a team creates branches, develops features, fixes bugs, merges code, and manages releases.
+
+# Explain the Git feature branching strategy and the pull request process.
+Git Feature Branching Strategy and Pull Request Process
+
+1. Create a feature branch: For every Jira automation story, we create a separate feature branch from the latest main branch.
+
+2. Develop and commit: We implement the automation changes, validate them locally, and commit the changes with meaningful commit messages.
+
+3. Push changes: Once development is complete, we push the feature branch to the remote repository.
+
+4. Sync with main: Before raising a PR, we fetch the latest changes from main and merge or rebase them into our feature branch.
+
+5. Resolve conflicts and validate: If any merge conflicts occur, we resolve them and rerun the relevant test cases to ensure everything works as expected.
+
+6. Raise a Pull Request: We create a PR against the main branch and assign the required reviewers.
+
+7. Code review and CI checks: Reviewers provide feedback, and automated CI checks execute. We address review comments and fix any issues identified.
+
+8. Merge the changes: Once the required approvals are received and all checks pass, the PR is merged into the main branch.
+
+9. Complete the story: We verify the merged changes and update the Jira story accordingly.
 

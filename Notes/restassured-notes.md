@@ -1,4 +1,4 @@
-# 1
+# 1 How to retrieve or access values from JSON when 'data' object is not availble?
 Great question, bro! The key concept to understand is that your JSONPath depends on the structure of the JSON response, not on a fixed keyword like data.
 
 Let's understand this using your employee JSON and a few common API response structures.
@@ -198,6 +198,202 @@ public class SSLTest {
     }
 }
 
+# =================================================================================================================================
+# 29. What is ObjectMapper in Rest Assured/Jackson library?
+- Jackson's ObjectMapper converts 
+Java objects into JSON and JSON into Java objects. This process is called serialization and deserialization.
+
+Serialization: Java object to JSON
+Suppose we have an Employee class:
+public class Employee {
+    private String name;
+    private int age;
+
+    public Employee() {}
+
+    public Employee(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+}
+
+Now convert the object to JSON using Jackson:
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class EmployeeTest {
+    public static void main(String[] args) throws Exception {
+
+        Employee employee = new Employee("Jwala", 30);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        String json = mapper.writeValueAsString(employee);
+
+        System.out.println(json);
+    }
+}
+
+Output:
+{
+  "name": "Jwala",
+  "age": 30
+}
+
+Here, writeValueAsString() serializes the Java object into a JSON string.
+When is this useful? When you want to create an API request body from a Java object instead of manually constructing JSON strings.
+
+Deserialization: JSON to Java object
+Suppose the API returns this JSON:
+{
+  "name": "Jwala",
+  "age": 30
+}
+
+You can convert it into an Employee object:
+String json = """
+    {
+        "name": "Jwala",
+        "age": 30
+    }
+    """;
+
+ObjectMapper mapper = new ObjectMapper();
+
+Employee employee = mapper.readValue(json, Employee.class);
+
+System.out.println(employee.getName());
+System.out.println(employee.getAge());
+
+Output:
+Jwala
+30
+
+Here, readValue() deserializes the JSON into a Java object.
+
+# How do you use ObjectMapper with REST Assured?
+A. Convert a Java object into a request body
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+
+Employee employee = new Employee("Jwala", 30);
+
+ObjectMapper mapper = new ObjectMapper();
+String requestBody = mapper.writeValueAsString(employee);
+
+RestAssured.given().contentType(ContentType.JSON).body(requestBody)
+.when()
+.post("/employees")
+.then()
+.statusCode(201);
+
+
+This explicitly uses Jackson to serialize the object before sending it.
+B. Let REST Assured serialize the object automatically
+You often don't need to instantiate ObjectMapper yourself:
+Employee employee = new Employee("Jwala", 30);
+
+given().contentType(ContentType.JSON).body(employee)
+.when()
+    .post("/employees")
+.then()
+    .statusCode(201);
+
+
+When a compatible Jackson serializer is available and configured, REST Assured can serialize the Java object automatically.
+
+Interview distinction: REST Assured handles the HTTP request and response; Jackson provides JSON-to-object and object-to-JSON conversion.
+
+# Serialization/Deserialization:
+1. Serialization
+Serialization is the process of converting a Java object into a JSON.
+In simple words:
+Java Object → JSON
+
+2. Deserialization
+Deserialization is the process of converting JSON data received from an API into a Java object.
+
+In simple words:
+JSON → Java Object
+
+Interview-ready answer:
+Serialization is the process of converting a Java object into JSON format, generally when sending request payloads to an API. Deserialization is the reverse process, where JSON 
+received from an API is converted into a Java object. In REST Assured, we can use POJOs with the body() method for serialization and response.as(Employee.class) for deserialization. 
+Jackson's ObjectMapper can perform both conversions.
+
+My recommendation: Remember this simple rule for interviews:
+- POST/PUT: Java POJO → JSON = Serialization.
+- GET response: JSON → Java POJO = Deserialization
+
+# => a follow-up question comes, after Serialization  and Deserialization, What is ObjectMapper?
+
+# What is ObjectMapper?
+- Avoids manually building JSON strings.
+- Makes request payloads easier to maintain using POJOs.
+- Converts API responses into Java objects for assertions.
+- Supports nested objects and collections.
+- Supports configuration for property naming, unknown fields, date formats, and custom serializers/deserializers.
+For example, you can deserialize an API response and then assert against typed fields instead of repeatedly extracting individual JSON values.
+
+Interview-ready answer
+ObjectMapper is a class from the Jackson Databind library used to serialize Java objects into JSON and deserialize JSON into Java objects. 
+Using POJOs and ObjectMapper improves type safety, readability, and maintainability compared with manually constructing JSON strings.
+
+Remember these two methods:
+- writeValueAsString(object)	Java object → JSON string
+- readValue(json, Employee.class)	JSON string → Java object
+
+Example:
+Serialization:
+ObjectMapper mapper = new ObjectMapper();
+String json = mapper.writeValueAsString(employee);
+
+Deserialization:
+Employee employee = mapper.readValue(json, Employee.class);
+
+# What is API mocking?
+API mocking means creating a simulated API that behaves like a real API without depending on the actual backend service.
+WireMock intercepts requests sent to its mock server and returns predefined responses.
+Step 1 — Create a WireMock server and define a mock API
+
+When would you use API mocking in a real project?
+Consider this scenario:
+
+You are testing an Order Management application.
+
+When a user places an order, your application calls three external services:
+1. Payment Service
+2. Inventory Service
+3. Notification Service
+However, the Payment Service is not ready yet.
+
+Instead of blocking your testing activities, you can mock the Payment API using WireMock.
+
+For example:
+- Return 200 when payment succeeds.
+- Return 400 when payment details are invalid.
+- Return 500 when the payment service encounters an internal error.
+- Simulate a timeout to test how your application handles slow responses.
+This allows you to test your application's behavior without depending on the actual Payment Service.
+
+# How do you handle API authentication using Bearer Tokens?
+
+
+# How do you generate and publish Extent or Allure reports as part of a CI/CD pipeline?
+
+
+# 37. Write Java code to verify the response of API for a particular scenario with assertions.
+
+
+# 
 
 
 

@@ -20,7 +20,8 @@ test(`Frame Handling`, async ({page}) => {
     await expect(page.getByRole('heading', { name: 'Frames' })).toHaveText('Frames')
 
     const largeFrame = page.frameLocator('iframe[name=largeFrame]')
-    largeFrame.locator(page.getByRole('button', {name: '+ Increment'})).dblclick()
+    // largeFrame.locator(page.getByRole('button', {name: '+ Increment'})).dblclick() // thos line of code is written in quite simiplified manner below;
+    largeFrame.getByRole('button', {name: '+ Increment'}).dblclick()
 
     // This will automatically wait until the counter element has text
     await largeFrame.locator('#c').waitFor({ state: 'visible' });
