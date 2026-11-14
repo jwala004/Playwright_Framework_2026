@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test'
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
+import { title } from 'node:process';
 
-test('File Handling @automationpracticesite', async ({ page }) => {
+test('File Handling @automationpracticesite',  { tag: '@smoke' }, async ({ page }) => {
    
-    test.skip(true, 'Temporarily disabled for maintenance');
+    // test.skip(true, 'Temporarily disabled for maintenance');
 
     await page.goto('/')
 
@@ -13,7 +14,7 @@ test('File Handling @automationpracticesite', async ({ page }) => {
 
     await expect(page.getByRole('heading', { name: 'Upload and Download' })).toHaveText('Upload and Download')
 
-    await page.getByText('Drag & Drop file here or Browse fileSupports single TXT, PNG, JPG, PDF files').setInputFiles('test-data/logindata.json')
+    await page.getByText('Drag & Drop file here or Browse fileSupports single TXT, PNG, JPG, PDF files').setInputFiles('data/test-data/login-data.csv')
 
     // Get File name
     const fileName: string = await page.locator("//h4[@class='text-xs font-bold text-slate-800']").innerText()

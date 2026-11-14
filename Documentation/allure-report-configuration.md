@@ -119,10 +119,8 @@ reporter: [
 
 4. Now Run your test
 
-5. Generate report
-npm run allure:generate
-
-Generate the report
+5. 
+Generate report
 npm run allure:generate
 
 Open the report

@@ -48,7 +48,8 @@ Tests: probability, assumptions, and validating intuition.
 10. Find the missing number
 Example: 2, 6, 12, 20, 30, ?
 Tests: pattern recognition and explaining why a rule fits.
-
+my answer: the number is increaing by +2 for each value to form next number
+2 + 4 = [6] => 6 + 6 = [12] => 12 + 8 => [20] => 20 + 10 => [30] => 30 + 12 => [42] is answer
 
 11. Find two numbers that sum to a target
 Given an array and a target, return the indices of two numbers whose sum equals the target.
@@ -61,8 +62,8 @@ Tests: strings, maps, ordering, and empty-input handling.
 
 
 13. Merge overlapping intervals
-Input: [[1,3],[2,6],[8,10],[9,12]]
-Output: [[1,6],[8,12]]
+Input: [[1,3], [2,6], [8,10], [9,12]]
+Output: [[1,6], [8,12]]
 Tests: sorting, algorithm design, and boundary handling.
 
 

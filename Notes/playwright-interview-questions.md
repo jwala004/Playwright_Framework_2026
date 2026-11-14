@@ -141,8 +141,7 @@ then, I will do the configuration changes in playwright.config.ts file like
 reporter: [['allure-playwright', { resultsDir: "allure-results" }]]
 then, if needed i will make configuration changes in 'package.json' scripts to clear the previously generated report
 then, Run the test-cases
-then, Generte the report using command
-
+then, Generte the report -> npm run allure:generate
 
 # . Explain the concept of context and page in Playwright.
 In Playwright, a context represents a browser context, which can have multiple pages. Each page represents a tab or window in the browser. I can create multiple contexts and pages to simulate different user scenarios and perform parallel testing.
@@ -201,7 +200,7 @@ await page.keyboard.type('Hello, World!');
 
 #  How do you run tests in parallel using Playwright?
 - Methpd 1:
-Configure in the 'playwright.config.ts' file;
+Configure 'workers' count in the 'playwright.config.ts' file;
 
 workers : 2 
 and set fullyParallel : true
@@ -427,6 +426,7 @@ Playwright's auto-waiting automatically waits for an element to become ready bef
 
 How it works:
 Before performing an action like click(), Playwright checks the following conditions:
+- DOM attached
 1. Visible – Element must be visible.
 2. Stable – Element's position and size must remain unchanged for at least two consecutive animation frames.
 3. Receives Events – Element must be able to receive pointer events (not blocked by another element).
@@ -440,7 +440,7 @@ await page.getByRole('button', { name: 'Login' }).click();
 Playwright automatically waits for the button to become actionable before clicking it.
 Important distinction:
 - Auto-waiting: Waits for actionability before performing actions.
-- Auto-retrying assertions: Repeatedly checks conditions until they pass or time out.
+- Auto-retrying assertions: Repeatedly checks conditions until they pass or time out occurs.
 
 # Handling Mouse actions 
 
@@ -542,8 +542,155 @@ this: Refers to the current object instance. It is commonly used to distinguish 
 
 super: Refers to the parent class object. While it calls parent constructors, it is also used to access parent methods and overridden variables.
 
+# Declaration:
+1. 
+let nameVal: string = 'Jwala'
+let description: string = `${nameVal} is the best`
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# BrowserContext:
+A BrowserContext is an isolated browser profile. Each context has its own:
+- Cookies
+- Local Storage
+- Session Storage
+- Permissions
+- Cache
+
+This is useful when testing scenarios like:
+- Admin ↔ User
+- Buyer ↔ Seller
+- Chat between two users
+- Multi-user document collaboration (Google Docs, Office 365)
+
+Interview Tip ⭐
+
+A lot of candidates confuse Browser, BrowserContext, and Page.
+Browser
+│
+├── Context 1 (User A)
+│     ├── Page 1
+│     └── Page 2
+│
+├── Context 2 (User B)
+│     ├── Page 1
+│
+└── Context 3 (Admin)
+		├── Page 1
+
+Browser → One browser process (Chromium/Firefox/WebKit).
+BrowserContext → An isolated browser profile (like an Incognito window).
+Page → A tab within a context.
+
+# => TypeScript/JavaScript is Single-Threaded.
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# What is a Promise?
+- TypeScript/JavaScript is Single-Threaded.
+
+In JavaScript/TypeScript, 
+- A Promise represents the eventual result of an asynchronous operation.
+- A Promise is an object that represents the eventual completion of an asynchronous operation.
+It can be in pending, fulfilled, or rejected state. In Playwright, many APIs 
+such as goto(), click(), fill(), and textContent() return Promises, which we generally handle using await inside asynchronous test functions.
+
+Simply:
+Promise = "I don't have the result right now, but I will give you the result later."
+
+Think of ordering food:
+	You order food
+		 ↓
+	Restaurant says: "Your food will be ready"
+		 ↓
+	You wait
+		 ↓
+	Food is ready
+
+The Promise is essentially that commitment that the result will be available later.
+
+Promise has 3 states:
+
+A Promise can be in one of three states:
+                      Promise
+                         │
+        ┌────────────────┼───────────────┐
+        ▼     	  		 ▼      	     ▼
+     Pending          Fulfilled 	 Rejected
+						 │
+					  Success
+
+1. Pending
+Operation is still running.
+"Please wait..."
+
+2. Fulfilled
+Operation completed successfully.
+"Here is your data."
+
+3. Rejected
+Operation failed.
+"Something went wrong."
+
+async
+  ↓
+allows us to use await
+  ↓
+await
+  ↓
+waits for Promise to settle or complete
+  ↓
+gives us the actual result
+
+- A Promise is an object that represents the eventual completion of an asynchronous operation.
+It can be in pending, fulfilled, or rejected state. In Playwright, many APIs 
+such as goto(), click(), fill(), and textContent() return Promises, which we generally handle using await inside asynchronous test functions.
+
+The one-liner to remember:
+Promise = future value; await = wait for that future value.
+
+# Asynchronous:
+Asynchronous means non-blocking.
+It means a task can start, and the program can move on to do other things without waiting for that task to finish. When the task is done, it notifies the program.
+
+Because JavaScript is single-threaded, using async/await allows the main thread to send commands to the browser and handle other tasks without freezing the entire 
+application while waiting for the browser to respond.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Why Playwright is More Stable ?
+Playwright automatically waits for:
+- DOM attachment
+- Visibility
+- Stability
+- Enabled state
+- Receiving events
+before performing an action.
+
+This eliminates many explicit waits that Selenium users had to write.
+
+Production Example:
+import { test, expect } from '@playwright/test';
+
+test('Open Playwright website', async ({ page }) => {
+  await page.goto('https://playwright.dev');
+
+  await expect(page).toHaveTitle(/Playwright/);
+});
+
+Even in this simple example, Playwright:
+- launches a browser (managed by the test runner)
+- creates a browser context
+- creates a page
+- navigates
+- waits for the page to load appropriately
+- performs an assertion with automatic retries
+- closes everything after the test
+
+The test runner abstracts these lifecycle steps so you can focus on the test logic.
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Top Playwright CLI Commands You Must Know!
-Playwright CLI (Command-Line Interface) is a powerful command-line tool provided by the Playwright framework to facilitate various tasks related to test automation. It serves as an interface to create, debug, and manage Playwright projects efficiently.
+Playwright CLI (Command-Line Interface) is a powerful command-line tool provided by the Playwright fra
+mework to facilitate various tasks related to test automation. It serves as an interface to create, debug, and manage Playwright projects efficiently.
 
 - Playwright Installation
 npm init playwright@latest
@@ -552,7 +699,7 @@ npm init playwright@latest
 npm install -D @playwright/test@latest
 
 - Run all the Tests
-npx playwright test
+npx playwright test (here in test folder our test-cases are located)
 
 - Run Specific Test file
 npx playwright test tests/PlaywrightCLIPractice1.spec.ts
@@ -637,7 +784,7 @@ test('Verify login API response and success message', async ({ page }) => {
 
 });
 
-Key points
+Key points:
 1. page.waitForResponse() listens for the matching API response.
 2. Promise.all() ensures the response listener is registered before clicking Submit.
 3. response.url() identifies the API endpoint.
@@ -739,29 +886,35 @@ Strong closing statement
 
 -----------------------------------------------------------------------------------------------------------------------------------
 # What architectural features make playwright faster and more reliable than selenium?
-1. Key architectural advantages
+Key architectural advantages: 
 1. Direct browser communication
 - Playwright communicates with browser engines through browser-specific automation protocols.
 - It avoids the traditional WebDriver HTTP request-response model used by Selenium.
 - This reduces communication overhead in many automation scenarios.
+
 2. Built-in auto-waiting
 - Automatically waits for elements to become actionable before performing operations.
 - Checks visibility, stability, enabled state, and whether the element receives events.
 - Reduces flaky tests and unnecessary explicit waits.
+
 3. Browser Contexts
 - Supports multiple isolated browser contexts within a single browser instance.
 - Each context has independent cookies, cache, local storage, and session state.
 - Enables faster and more efficient parallel test execution without launching a separate browser for every test.
+
 4. Locator architecture
 - Uses lazy evaluation to locate elements when actions are performed.
 - Automatically re-resolves elements if the DOM changes.
 - Provides better reliability for dynamic applications compared with holding stale element references.
+
 5. Built-in network interception
 - Provides native APIs to intercept, mock, modify, and monitor network requests and responses.
 - Reduces dependency on external tools for API mocking and network-level testing.
+
 6. Event-driven architecture
 - Supports event listeners for popups, downloads, dialogs, requests, and responses.
 - Makes handling asynchronous browser events more straightforward.
+
 7. Built-in parallel execution support
 - Supports parallel execution through Playwright workers and isolated browser contexts.
 - Reduces test execution time when tests are designed independently.
@@ -781,8 +934,27 @@ Don't claim that Playwright is always faster than Selenium. Actual performance d
 
 Also, Selenium 4 has introduced improvements such as Selenium Manager and WebDriver BiDi support, so the comparison should be based on the actual capabilities being discussed rather than suggesting Selenium is outdated.
 -----------------------------------------------------------------------------------------------------------------------------------
+# Locator Priority (Memorize This)
+1. getByRole()      ⭐⭐⭐⭐⭐
+2. getByLabel()
+3. getByPlaceholder()
+4. getByText()
+5. getByAltText()
+6. getByTitle()
+7. getByTestId()
+8. CSS Locator
+9. XPath
 -----------------------------------------------------------------------------------------------------------------------------------
+# Why does Playwright recommend getByRole() over CSS selectors?
+getByRole() uses semantic roles and accessible names from the browser's accessibility tree, aligning tests with user interactions instead of implementation details. This makes tests more maintainable and also helps validate application accessibility.
 -----------------------------------------------------------------------------------------------------------------------------------
+# Dropdown handling
+await page.locator('#dropdown').selectOption('in') // Selecting by value attribute
+await page.locator("#country").selectOption({ label: "India" }) // Selecting by label (By visible text)
+await page.locator("#country").selectOption({ index: 2 }) // Selecting by Index
 -----------------------------------------------------------------------------------------------------------------------------------
+const str : string = 'abc@123$def'
+
+console.log(str.replace(/[^a-z]/g, '')) // "abcdef" (Matches all characters NOT in the range from a to z)
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------

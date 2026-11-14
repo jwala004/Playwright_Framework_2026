@@ -1,6 +1,7 @@
 // import { test, expect } from '@playwright/test';
 import { test, expect } from '../fixtures/testFixture'
 import { config } from '../config/env.config'
+import { string } from 'zod'
 
 test.describe('Login functionality', () => {
         
@@ -14,11 +15,14 @@ test.describe('Login functionality', () => {
         //         expect(await loginPage.getWarnigMessage()).toBe(loginExpectedData.warningMessage)
         // })
 
-        test("TC_002 - Verify login success with valid Email", async ({ loginPage, page }) => {
+        test("TC_002 - Verify login success with valid Email", async ({ loginPage, page , context}) => {
                 // await loginPage.login(config.username, config.password)
                 await expect(page.getByRole('heading', { name: 'Our Top Courses' })).toBeVisible()
                 console.log('Heading text: ' + await page.getByRole('heading', { name: 'Our Top Courses' }).textContent())
                 // await expect(page).toHaveURL(/route=account\/account/)
+
+
+                
         })
 
         // test("TC_003 - Verify user can logout successfully from My Account", async ({ loginPage, page }) => {
