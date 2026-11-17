@@ -118,8 +118,8 @@ Based on what we've built so far, I would represent the architecture like this:
               ↓              ↓                    │
         Validate ENV     Validate Variables       │
         dev/uat/prod     BASE_URL                 │
-                         APP_USERNAME             │
-                         APP_PASSWORD             │
+              |          APP_USERNAME             │
+              |          APP_PASSWORD             │
               │               │                   │
               └───────┬───────┘                   │
                       ↓                           │
@@ -134,7 +134,7 @@ Based on what we've built so far, I would represent the architecture like this:
                      │             │             │
                      ↓             ↓             ↓
                   baseURL       Projects       Global
-                               Configuration   Settings
+                     |          Configuration   Settings
                      │             │             │
                      └─────────────┼─────────────┘
                                    ↓

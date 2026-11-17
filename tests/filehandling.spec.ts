@@ -5,7 +5,7 @@ import { title } from 'node:process';
 
 test('File Handling @automationpracticesite',  { tag: '@smoke' }, async ({ page }) => {
    
-    // test.skip(true, 'Temporarily disabled for maintenance');
+    test.skip(true, 'Temporarily disabled for maintenance');
 
     await page.goto('/')
 

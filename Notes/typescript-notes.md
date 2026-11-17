@@ -469,7 +469,22 @@ for (let i = 0; i < arr121.length; i++) {
 }
 
 ====================================================================================================================
+=> EPAM Interview question:
+const a; // 'const' declarations must be initialized.
+a = 10;
+console.log(a)
 
+const d = 10; // Cannot assign to 'd' because it is a constant.
+d = 20; 
+
+let b;
+b = 10
+console.log(b) // 10
+
+let c = 10;
+c = 20;
+console.log(c) // 20
+====================================================================================================================
 ### 1. TypeScript private vs. JavaScript # Private Fields
 # Core Comparison
 1. private (TypeScript Keyword): Compile-time check only. Disappears after compilation into standard public fields.
