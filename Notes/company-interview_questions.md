@@ -17,5 +17,11 @@
 
 
 # Quadrant
-# // clicks on submit button to do login and checks for the API response and verifies that the response is 200, and check the success message is displayed.
+# 1. clicks on submit button to do login and checks for the API response and verifies that the response is 200, and check the success message is displayed.
+
+# 2. strict-mode violation error (When do we get this error, and how to resolve it?)
+
+# 3. 
+
+
 

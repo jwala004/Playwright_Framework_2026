@@ -80,6 +80,20 @@ Other important features:
 
 # 24. What is the Singleton Design Pattern or which other patterns are you familiar with?
 
+# Dynamic xpath example with practical use-case
+# What is Dynamic xpath with an example?
+
+# **How do you read data from the Examples table section in Cucumber without using Scenario outline?**
+
+# **How do you execute only failed tests in TestNG?**
+
+# **Explain the new features introuduced in Selenium 4, point wise**
+
+# what is invalid certificate exception?
+
+# can we assign negative priority to test-cases in testng
+i know we can, and negative priority also works correctly. but it is suggested not to use it. as it creates confusion.
+
 
 # 25. Where can we practically use LinkedList concepts in test automation?
 In test automation, I can use LinkedList when I need efficient insertion or removal at the beginning or end of a sequential collection. For example, 
@@ -198,4 +212,82 @@ FATAL → ERROR → WARN → INFO → DEBUG → TRACE
 Interview takeaway: 
 Examples table → Scenario Outline; 
 DataTable → regular Scenario or Scenario Outline step arguments. They are different Cucumber mechanisms.
+
+======================================================================================================================================================
+# To be implemented in the selenium framework
+# how to configure or run test-cases to run on cross browser for selnium+java
+
+There are two main approaches:
+1. Sequential cross-browser execution: Run the same tests in each browser, one after another.
+2. Parallel cross-browser execution: Run browser-specific test suites concurrently, provided the framework isolates each browser session and test data appropriately. Selenium Grid can also run tests across different browsers, machines, and platforms.
+
+1. Create a browser factory
+Create a reusable class that initializes the browser based on the supplied name.
+// BrowserFactory.java
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+
+public class BrowserFactory {
+
+    public static WebDriver createDriver(String browser) {
+
+        switch (browser.toLowerCase()) {
+
+            case "chrome":
+                return new ChromeDriver();
+
+            case "firefox":
+                return new FirefoxDriver();
+
+            case "edge":
+                return new EdgeDriver();
+
+            default:
+                throw new IllegalArgumentException(
+                    "Unsupported browser: " + browser
+                );
+        }
+    }
+}
+
+
+With Selenium 4, Selenium Manager can help resolve browser drivers automatically, provided the browser and required downloads are available.
+
+1. Create a browser factory
+Create a reusable class that initializes the browser based on the supplied name.
+// BrowserFactory.java
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+
+public class BrowserFactory {
+
+    public static WebDriver createDriver(String browser) {
+
+        switch (browser.toLowerCase()) {
+
+            case "chrome":
+                return new ChromeDriver();
+
+            case "firefox":
+                return new FirefoxDriver();
+
+            case "edge":
+                return new EdgeDriver();
+
+            default:
+                throw new IllegalArgumentException(
+                    "Unsupported browser: " + browser
+                );
+        }
+    }
+}
+
+
+With Selenium 4, Selenium Manager can help resolve browser drivers automatically, provided the browser and required downloads are available.
 

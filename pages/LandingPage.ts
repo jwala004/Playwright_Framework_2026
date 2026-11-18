@@ -13,6 +13,7 @@ export class LandingPage extends BasePage {
     async navigateToLandingPage() {
         await this.goToUrl('/')
     }
+
     async getPageTitle() {
         await this.page.title()
     }
@@ -29,6 +30,7 @@ export class LandingPage extends BasePage {
         // await this.myAccount.click();
         // await this.register.click();
     }
+    
     async searchProduct(productName: string) {
         // await this.searchBox.fill(productName)
         // await this.searchBox.press('Enter')

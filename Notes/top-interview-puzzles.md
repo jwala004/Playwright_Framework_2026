@@ -51,6 +51,10 @@ Tests: pattern recognition and explaining why a rule fits.
 my answer: the number is increaing by +2 for each value to form next number
 2 + 4 = [6] => 6 + 6 = [12] => 12 + 8 => [20] => 20 + 10 => [30] => 30 + 12 => [42] is answer
 
+ 2  6  12 20 30 [42]
+  \/ \/ \/  \/  \/
+   4  6  8   10  12
+
 11. Find two numbers that sum to a target
 Given an array and a target, return the indices of two numbers whose sum equals the target.
 Tests: arrays, hash maps, duplicate handling, and \(O(n)\) optimization.

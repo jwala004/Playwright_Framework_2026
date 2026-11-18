@@ -23,6 +23,7 @@ export class BasePage {
             throw new Error(`${locator} was not visible within ${timeout}ms`);
         }
     }
+    
     // Just for dummy purpose to use how we can write this kind of function
     async waitForHidden(locator: Locator, timeout: number = 10000): Promise<void> {
         try {

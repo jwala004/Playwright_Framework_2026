@@ -8,7 +8,8 @@ Once the actual application becomes available, I would replace the mocks with re
 This approach helps identify defects early, reduces dependency on development completion, and improves overall testing efficiency.
 
 
-# 2. How would you test when different components are not ready?
+# 2. suppose a web app is not ready then how you will do testing
+# How would you test when different components are not ready?
 Application status	            Testing approach	                                                             Example
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 UI is not ready	                Review requirements, design test cases, prepare automation framework           Prepare login test scenarios
@@ -25,6 +26,20 @@ independently ready	            Component and integration testing	              
 Entire application is ready	    End-to-end and regression testing	                                             Login → dashboard → logout
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+- Interview-ready answer: 
+"If the web application is not ready, I would follow a shift-left testing approach. I wouldn't wait for the UI or the complete application to be developed.
+
+First, I would review the requirements, user stories, UI designs, and API specifications to identify test scenarios and acceptance criteria.
+
+Second, if the backend APIs are not ready, I would use API mocking or service virtualization to simulate the expected responses. This would allow me to test frontend behavior, including positive and negative scenarios, error handling, loading states, and boundary conditions.
+
+Third, I would begin API testing as soon as endpoints or a testable service become available. I would validate status codes, headers, response payloads, schema, and business rules.
+
+In parallel, I would develop automation scripts using Playwright or Selenium, prepare test data, and integrate the tests into the CI/CD pipeline.
+
+Once the actual application becomes available, I would replace the mocks with real services and execute integration, end-to-end, regression, and cross-browser testing.
+
+This approach helps identify defects early, reduces dependency on development completion, and improves overall testing efficiency."
 
 # 2. How would you resolve conflicts in your team?
 
