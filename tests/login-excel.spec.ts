@@ -16,7 +16,8 @@ test(`Validate login from Excel ${userslogindata.username}`, async ({page, login
     await page.goto('/')
 
     // open login pop-up
-    await landingPage.navigateToLandingPage()
+    // await landingPage.navigateToLandingPage()
+    await landingPage.navigate()
     await landingPage.navigateToLoginPopUp()
 
     console.log(logindata);

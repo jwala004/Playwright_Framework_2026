@@ -5,8 +5,6 @@ import { readJson } from '../test-data-readers/json-reader';
 import { readCsvData } from '../test-data-readers/csv-reader';
 import { readExcelData } from '../test-data-readers/excel-reader';
 
-// const DATA_DIRECTORY = path.resolve(process.cwd(),'data','test-data');
-
 export interface TestDataOptions {
     sheetName?: string;
 }
@@ -14,11 +12,6 @@ export interface TestDataOptions {
 export class TestDataFactory {
     
     static load<S extends z.ZodType>(fileName_with_filePath: string, schema: S, options?: TestDataOptions): z.infer<S>[] {
-        // Resolve relative paths from the test-data directory.
-        // const resolvedPath = path.resolve(DATA_DIRECTORY, filePath);
-
-        // Restrict files to the configured test-data directory.
-        // const relativePath = path.relative(DATA_DIRECTORY, resolvedPath);
 
         if (
             fileName_with_filePath === '..' ||

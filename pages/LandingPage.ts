@@ -10,9 +10,13 @@ export class LandingPage extends BasePage {
         this.loginButtonOnHomePage = page.getByRole('button', { name: 'Login' });
     }
 
-    async navigateToLandingPage() {
-        await this.goToUrl('/')
+    override async navigate(path: string = '/') {
+        await this.page.goto(path)
     }
+
+    // async navigateToLandingPage() {
+    //     await this.goToUrl('/')
+    // }
 
     async getPageTitle() {
         await this.page.title()

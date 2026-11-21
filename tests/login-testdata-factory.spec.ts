@@ -17,7 +17,8 @@ for (const usersloginTestDataFromJson of loginTestDataFromJson) {
     await page.goto('/');
 
     // Open login pop-up
-    await landingPage.navigateToLandingPage()
+    // await landingPage.navigateToLandingPage()
+    await landingPage.navigate()
     await landingPage.navigateToLoginPopUp()
 
     // login into the application
@@ -38,7 +39,8 @@ for (const usersloginTestDataFromCsv of loginTestDataFromCsv) {
     await page.goto('/');
 
     // Open login pop-up
-    await landingPage.navigateToLandingPage()
+    // await landingPage.navigateToLandingPage()
+    await landingPage.navigate()
     await landingPage.navigateToLoginPopUp()
 
     // login into the application
@@ -59,7 +61,8 @@ for (const usersloginTestDataFromXLSX of loginTestDataFromExcel) {
     await page.goto('/');
 
     // Open login pop-up
-    await landingPage.navigateToLandingPage()
+    // await landingPage.navigateToLandingPage()
+    await landingPage.navigate()
     await landingPage.navigateToLoginPopUp()
 
     // login into the application

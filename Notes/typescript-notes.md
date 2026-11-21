@@ -351,8 +351,7 @@ It initializes values and prepares the class for use.
 Constructor parameters can also have types.
 
 Example:
-
-class LoginPage{
+class LoginPage {
 nameValue: string // variable declaration
 company: string // variable declaration
 
@@ -381,7 +380,7 @@ YouTube
 
 
 # Import / Export
-Import and export split code into multiple files.
+import and export split code into multiple files.
 This improves project organization and maintainability.
 Same behavior as JavaScript.
 => In actual project, we are going to use multiple files, so in that case this Import / Export is going to be helpful
@@ -462,7 +461,7 @@ for (const i in arr121) {
 }
 
 3. Traditional for loop — access indexes
-for (let i = 0; i < arr121.length; i++) {
+for (let i = 0; i < arr121.length - 1; i++) {
     if (arr121[i] === ' ') {
         console.log('Space found at index:', i);
     }
@@ -489,7 +488,7 @@ console.log(c) // 20
 # Core Comparison
 1. private (TypeScript Keyword): Compile-time check only. Disappears after compilation into standard public fields.
 
-2. # (ECMAScript Private Fields): Runtime enforcement native to JavaScript/V8. Access outside the class throws a runtime TypeError.
+2. # (ECMAScript Private Fields): Runtime enforcement native to JavaScript. Access outside the class throws a runtime TypeError.
 
 # Key Advantages of #
 1. True Hard Encapsulation: Cannot be accessed, overridden, or inspected externally at runtime (even via dynamic key lookup like obj['field']).

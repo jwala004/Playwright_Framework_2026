@@ -6,7 +6,8 @@ import { string } from 'zod'
 test.describe('Login functionality', () => {
         
         test.beforeEach(async ({ landingPage }) => {
-                await landingPage.navigateToLandingPage()
+                // await landingPage.navigateToLandingPage()
+                await landingPage.navigate()
                 // await landingPage.navigateToLoginPopUp()
         })
 

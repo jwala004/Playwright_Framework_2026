@@ -15,7 +15,8 @@ for (const user of users) {
 
     test(`Parametrised Login Test => Reading test data from json file ${user.username}`, async ({ page, landingPage, loginPage }) => {
     
-    await landingPage.navigateToLandingPage()
+    // await landingPage.navigateToLandingPage()
+    await landingPage.navigate()
     await landingPage.navigateToLoginPopUp()
 
     // login into the application

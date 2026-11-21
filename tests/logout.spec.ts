@@ -6,7 +6,8 @@ test.use({ storageState: { cookies: [], origins: [] } });
 test.describe("Login - Logout functionality test", () => {
 
     test.beforeEach(async ({ landingPage }) => {
-        await landingPage.navigateToLandingPage()
+        // await landingPage.navigateToLandingPage()
+        await landingPage.navigate()
         await landingPage.navigateToLoginPopUp()
     }),
 
@@ -23,7 +24,8 @@ test.describe("Login - Logout functionality test", () => {
 
 test('Login - Logout : All in a single test-case', async ({ page, landingPage, loginPage, logoutPage }) => {
     // launch the application
-    await landingPage.navigateToLandingPage()
+    // await landingPage.navigateToLandingPage()
+    await landingPage.navigate()
     await landingPage.navigateToLoginPopUp()
 
     // verify login
@@ -39,7 +41,8 @@ test('Login - Logout : All in a single test-case', async ({ page, landingPage, l
 
 test('Verify Login failed with invalid credentials', async ({ page, loginPage, logoutPage, landingPage }) => {
     // launch the application
-    await landingPage.navigateToLandingPage()
+    // await landingPage.navigateToLandingPage()
+    await landingPage.navigate()
     await landingPage.navigateToLoginPopUp()
     await loginPage.login('abc', 'cde')
 

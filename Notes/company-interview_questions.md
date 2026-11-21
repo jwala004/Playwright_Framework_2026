@@ -21,7 +21,27 @@
 
 # 2. strict-mode violation error (When do we get this error, and how to resolve it?)
 
-# 3. 
+# 3.
+
+
+# EPAM:
+1. Parallelism question
+fullyParallel : true
+workers : 4
+
+answer: 4 workers will run in parallel even when only one file is pending with multiple test-cases, or there is only file with multiple test-cases, 4 workers will run in parallel.
+
+fullyParallel : false
+workers : 4
+
+answer: 4 workers will run in parallel, but when a single file will be pending with multiple test-cases, then test-cases will run sequentially.
+
+2. async vs await
+why we are using await keyword, if we have timeout property that we can set or define in 'playwright.config.ts' file
+
+3. 
+
+
 
 
 

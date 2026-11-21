@@ -6,6 +6,10 @@ If you haven't already:
 npm install dotenv
 npm install -D cross-env
 
+- dotenv (Runtime Dependency): Reads environment variables from a local .env file and injects them into process.env so your application can securely access configuration keys, database URLs, and secrets.
+
+- cross-env (Dev Dependency): Provides a single command to set environment variables (e.g., NODE_ENV=production) uniformly across different operating systems—solving the syntax differences between Windows (SET) and Linux/macOS (export).
+
 
 Environment selection and Playwright Project selection are two different dimensions.
 

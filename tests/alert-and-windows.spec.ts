@@ -1,11 +1,18 @@
 import {test, expect, Locator} from '@playwright/test'
+import ur from 'zod/v4/locales/ur.js';
 
 
 test('Alerts and Toasts handling @alerts', async({page}) =>{
-    test.skip(true, 'Temporarily disabled for maintenance');
+    // test.skip(true, 'Temporarily disabled for maintenance');
 
     await page.goto('/')
+    // await page.goto('https://automationpractice2.questaspire.com')
 
+    const title: string = await page.title()
+    const url: string =  await page.url()
+
+    console.log('title: ' + title)
+    console.log('url: ' + url)
     
     await page.getByRole('button', {name : 'Alerts & Windows'}).click()
     // await page.getByRole('link', { name: 'Alerts & Toasts' }).click() // this will simply not work here

@@ -6,7 +6,8 @@ test.use({ storageState: { cookies: [], origins: [] } });
 test.describe('Login functionality validation from JSON data', () => {
 
     test.beforeEach(async ({landingPage}) => {
-        await landingPage.navigateToLandingPage()
+        // await landingPage.navigateToLandingPage()
+        await landingPage.navigate()
         await landingPage.navigateToLoginPopUp()
     })
     
