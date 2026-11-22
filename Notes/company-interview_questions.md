@@ -42,6 +42,19 @@ why we are using await keyword, if we have timeout property that we can set or d
 3. 
 
 
+=====================================================================================================================================================
+DXC Interview questions:
+1. Today I was asked an interview question, it was something like on a page some random security questions are getting loaded, each time differently, and for each each question there 
+are some values in the dropdown. how would you automate it?
+2. 
+3. 
+4. 
+5. 
+=====================================================================================================================================================
+Luxsoft  Interview questions:
+1. web table - price column -  price is in dollar, we have to get the prices greater than 500$, and put in descending order, return it in double.
+2. 
+3. 
 
 
 

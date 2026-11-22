@@ -6,8 +6,8 @@ type UserData = {
   password: string;
 };
 
-// 2. Extend the base test with your custom fixture
-export const test = base.extend<{ userData: UserData }>({
+// 2. Extend the base testdata with your custom fixture
+export const testdata = base.extend<{ userData: UserData }>({
   userData: async ({}, use) => {
     const data: UserData = {
       username: 'standard_user',
@@ -18,5 +18,3 @@ export const test = base.extend<{ userData: UserData }>({
     await use(data);
   },
 });
-
-export { expect } from '@playwright/test';

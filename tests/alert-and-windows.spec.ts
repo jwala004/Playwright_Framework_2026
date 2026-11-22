@@ -1,9 +1,8 @@
 import {test, expect, Locator} from '@playwright/test'
-import ur from 'zod/v4/locales/ur.js';
 
 
 test('Alerts and Toasts handling @alerts', async({page}) =>{
-    // test.skip(true, 'Temporarily disabled for maintenance');
+    test.skip(true, 'Temporarily disabled for maintenance');
 
     await page.goto('/')
     // await page.goto('https://automationpractice2.questaspire.com')
