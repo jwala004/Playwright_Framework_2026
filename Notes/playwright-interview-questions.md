@@ -1179,6 +1179,9 @@ Remember:
 - Sharding provides parallelism across independent machines.
 - Workers provide parallelism within each machine.
 -----------------------------------------------------------------------------------------------------------------------------------
+# Logger library for Playwright and NodeJs project
+1. Pino (very fast and provides excellent performace)
+2. Winston (good , supports customized logging)
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
 

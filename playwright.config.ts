@@ -48,36 +48,47 @@ export default defineConfig({
     ],
 
     projects: [
-        // // 1. Setup Project: Executes auth.setup.ts first
-        // {
-        //     name: 'setup',
-        //     testMatch: /.*\.setup\.ts/,
-        // },
-        // {
-        //     name: 'chromium',
-        //     dependencies: ['setup'], // Ensures setup finishes before running these tests
-        //     use: {
-        //         ...devices['Desktop Chrome'],
-        //         storageState: './playwright/.auth/user.json', // Automatically injects cookies & localStorage
-        //         // headless: true, // not needed, as headless is already set in the global use options
-        //         /* 3. Pass launch arguments for Chromium-based browsers */
-        //     viewport: null,
-        //     launchOptions: {
-        //         args: [
-        //             '--start-maximized',
-        //             '--window-position=0,0',
-        //             '--window-size=1920,1080',
-        //         ],
-        //     },
-        //     }
-        // },
-
+        // 1. Setup Project: Executes auth.setup.ts first
+        {
+            name: 'setup',
+            testMatch: /.*\.setup\.ts/,
+        },
         {
             name: 'chromium',
+            dependencies: ['setup'], // Ensures setup finishes before running these tests
             use: {
                 ...devices['Desktop Chrome'],
+                storageState: './playwright/.auth/user.json', // Automatically injects cookies & localStorage
+                // headless: true, // not needed, as headless is already set in the global use options
+                /* 3. Pass launch arguments for Chromium-based browsers */
+            // viewport: null,
+            // launchOptions: {
+            //     args: [
+            //         '--start-maximized',
+            //         '--window-position=0,0',
+            //         '--window-size=1920,1080',
+            //     ],
+            // },
             }
         },
+
+        {
+            name: 'firefox',
+            dependencies: ['setup'], // Ensures setup finishes before running these tests
+            use: {
+                ...devices['Desktop Firefox'],
+                storageState: './playwright/.auth/user.json', // Automatically injects cookies & localStorage
+                // headless: true, // not needed, as headless is already set in the global use options
+                /* 3. Pass launch arguments for Chromium-based browsers */
+            }
+        },
+
+        // {
+        //     name: 'chromium',
+        //     use: {
+        //         ...devices['Desktop Chrome'],
+        //     }
+        // },
 
         // {
         //     name: 'firefox',
