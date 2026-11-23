@@ -3,7 +3,8 @@ import { config } from '../config/env.config';
 
 setup('authenticate user', async ({ page, loginPage, landingPage }) => {
 
-    await landingPage.navigateToLandingPage()
+    // await landingPage.navigateToLandingPage()
+    await landingPage.navigate()
     await landingPage.navigateToLoginPopUp()
     await loginPage.login(config.username, config.password)
 

@@ -18,7 +18,7 @@ export default defineConfig({
         //     height: 1080,
         // },
         // Force headless mode in CI environments
-        headless: process.env.CI ? true : false,
+        headless: process.env.CI ? true : true,
         screenshot: 'only-on-failure',
         video: 'retain-on-failure',
         /* 
